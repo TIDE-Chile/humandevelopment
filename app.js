@@ -9,6 +9,7 @@ angular
     'tide-angular',
     'underscore',
     'd3service',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'vr.directives.slider'
   ]);
 
