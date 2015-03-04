@@ -1,0 +1,106 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>Visualizador Asistencia - Relación Asistencia SIMCE </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="main.css">
+    <!-- endbuild -->
+    <script src="./bower_components/modernizr/modernizr.js"></script>
+  </head>
+  <body ng-app="tideApp">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+  <div id="browser_warning">
+      <h3 class="text-muted">Su navegador no soporta algunas funciones modernas (HTML5 / SVG) que son necesarias para el funcionamiento de este visualizador.  Le sugerimos actualizarl el navegador o probar con uno diferente.</h3>
+  </div>
+
+    <!-- Add your site or application content here -->
+    <!-- container -->
+    <div class="container" ng-controller="AppController as controller">
+      <div class="header">
+        <h1 class="text-muted">HDI</h1>
+        <p class="text-muted">Visualization Human Development Index.</p>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <select ng-model="controller.selectedIndicator" name="string" required ng-tequired="string" ng-options="item.code as item.label for item in controller.indicators" ng-change="controller.changeIndicator()"></select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <select ng-model="controller.targetCountry" name="string" required ng-required="string" ng-options="item.countryCode as item.countryName group by item.region for item in controller.countries" ng-change="controller.changeCountry()"></select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <select ng-model="controller.selectedYear" name="string" required ng-tequired="string" ng-options="value for value in controller.years" ng-change="controller.changeSelection()"></select>
+      </div>
+      <div ng-show="controller.loading" class="label label-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Cargando datos...</div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <p> Relación Asistencia / SIMCE (datos SIMCE 4º Básico 2012 para estudiantes de la comuna de Santiago con asistencia registrada mayor a 0%)</p>
+        <div td-xy-chart class="col-md-12" td-data="controller.data" td-size-attribute="'population'" td-xattribute="'HDI'" td-yattribute="controller.selectedIndicator" td-tooltip-message="controller.tooltipMessage" td-min-size="5" td-max-size="20" td-color-attribute="'Region'" td-width="500" td-trendline="false" td-color-legend="controller.legend" td-drawing="controller.drawing" td-exclude-zero-x="true" td-id-attribute="'iso3'" td-selected="controller.selectedCountry" td-log-scale-y="controller.selectedIndicator=='GNI'" td-y-limits="controller.limits[controller.selectedIndicator]" td-x-limits="[0,1]" td-data-version="controller.dataVersion" td-highlight-x-band="controller.bands['HDI']" td-highlight-y-band="controller.bands[controller.selectedIndicator]" td-on-selected="controller.onSelected">    
+        </div>
+      </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <select ng-model="controller.selectedRegion" name="string" required ng-tequired="string" ng-options="value for value in controller.regions" ng-change="controller.selectRegion()" ng-multiple="true" multiple></select>
+      </div>
+
+        <p ng-show="controller.drawing" class="text-info">Dibujando datos</p>
+
+
+      <div class="footer">
+
+        <p>Prototipo para uso en actividades de exploración de datos por parte de equipos del Ministerio de Educación.  No ha sido diseñado para uso en producción y/o difusión masiva.</p>
+
+        <p>Tecnología de visualización por <a href="http://www.tide.cl" target="_blank">TIDE SA</a></p>
+      </div>
+
+
+
+    </div><!-- container -->
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+        var protocol = window.location.protocol == "file:"?"http:":"";
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script',protocol+'//www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-57309660-1');
+       ga('send', 'pageview');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
+     <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="./bower_components/d3/d3.js"></script>
+    <script src="./bower_components/underscore/underscore.js"></script>
+    <script src="./bower_components/tide-angular/tide-angular.js"></script>    
+    <!-- endbower -->
+    <!-- endbuild -->
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="app.js"></script>
+        <script src="controller.js"></script>
+        <script src="service.js"></script>
+        <script src="tide-angular-xy.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
