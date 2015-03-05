@@ -30,6 +30,8 @@ angular.module('tideApp')
 	var myself = this;
     this.loading = false;
     this.data = null;
+    this.enableInequalityButton = true;
+    this.showInequalityBand = false;
     this.targetCountry = "AFG";
 
     this.dataVersion=0;
@@ -88,6 +90,11 @@ angular.module('tideApp')
         }
     }
 
+    this.changeYear = function() {
+        myself.load();
+    }
+
+
     this.changeIndicator = function() { 
         myself.load();
     }
@@ -112,6 +119,12 @@ angular.module('tideApp')
             myself.selectedCountry = result.target;
             myself.bands = result.bands;
             myself.data = result.data;
+            myself.countriesWithSimilarHDI = result.similarHDI;
+            myself.countriesWithSimilarIHDI = result.similarIHDI;
+            myself.countriesWithSimilarIHDIb = result.similarIHDIb;
+            myself.countriesWithSimilarIndicator = result.similarIndicator;
+            myself.showInequalityBand = +myself.selectedCountry.IHDI > 0 ? myself.showInequalityBand : false;
+ 
         })
         
     }

@@ -32,28 +32,102 @@
     <!-- container -->
     <div class="container" ng-controller="AppController as controller">
       <div class="header">
-        <h1 class="text-muted">HDI</h1>
-        <p class="text-muted">Visualization Human Development Index.</p>
+        <h1 class="text-muted">Human Developmnet Index (HDI) <small>Similarity explorer</small></h1>
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <select ng-model="controller.selectedIndicator" name="string" required ng-tequired="string" ng-options="item.code as item.label for item in controller.indicators" ng-change="controller.changeIndicator()"></select>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <select ng-model="controller.targetCountry" name="string" required ng-required="string" ng-options="item.countryCode as item.countryName group by item.region for item in controller.countries" ng-change="controller.changeCountry()"></select>
-      </div>
+
+      <button type="button" class="btn btn-primary" ng-click="controller.showInequalityBand=!controller.showInequalityBand" ng-class="{disabled:!(controller.selectedCountry.IHDI>0), active:controller.showInequalityBand}">Inequality</button>
+
       <div ng-show="controller.loading" class="label label-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Cargando datos...</div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <slider floor="1980" ceiling="2013" step="1" precision="0" ng-model="controller.selectedYear" ng-change="controller.changeSelection()"></slider>
+        <slider floor="1980" ceiling="2013" step="1" precision="0" ng-model="controller.selectedYear" ng-change="controller.changeYear()"></slider>
+      </div>
+
+
+      <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <select class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.targetCountry" name="string" required ng-required="string" ng-options="item.countryCode as item.countryName group by item.region for item in controller.countries" ng-change="controller.changeCountry()"></select>
+          <select class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" name="string" required ng-tequired="string" ng-options="item.code as item.label for item in controller.indicators" ng-change="controller.changeIndicator()"></select>
+          <hr>       
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          
+          <div td-xy-chart class="col-md-12" td-data="controller.data" td-size-attribute="'population'" td-xattribute="'HDI'" td-yattribute="controller.selectedIndicator" td-tooltip-message="controller.tooltipMessage" td-min-size="5" td-max-size="20" td-color-attribute="'Region'" td-width="400" td-trendline="false" td-color-legend="controller.legend" td-drawing="controller.drawing" td-exclude-zero-x="true" td-id-attribute="'iso3'" td-selected="controller.selectedCountry" td-log-scale-y="controller.selectedIndicator=='GNI'" td-y-limits="controller.limits[controller.selectedIndicator]" td-x-limits="[0,1]" td-data-version="controller.dataVersion" td-highlight-x-band="controller.bands['HDI']" td-highlight-x-alt-band="controller.bands['IHDI']" td-highlight-y-band="controller.bands[controller.selectedIndicator]" td-on-selected="controller.onSelected" td-activate-alt-x-band="controller.showInequalityBand">    
+            </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <h4>{{controller.selectedCountry.Country}}</h4>
+          <table class="table table-striped table-hover">
+            <thead>
+
+            </thead>
+            <tbody>
+              <tr>
+                <td>Year</td>
+                <td>{{controller.selectedCountry.year}}</td>
+              </tr>
+              <tr>
+                <td>HDI</td>
+                <td>{{controller.selectedCountry.HDI}}</td>
+              </tr>              
+              <tr>
+                <td>HDI (inequality adjusted)</td>
+                <td>{{controller.selectedCountry.IHDI}}</td>
+              </tr>
+              <tr>
+                <td>Population</td>
+                <td>{{controller.selectedCountry.population | number}}</td>
+              </tr>              
+              <tr>
+                <td>Income (GNI)</td>
+                <td>${{controller.selectedCountry.GNI | number}}</td>
+              </tr>              
+              <tr>
+                <td>Life Expectancy</td>
+                <td>{{controller.selectedCountry.LE | number:1}}</td>
+              </tr>              
+              <tr>
+                <td>Expected Years of Schooling</td>
+                <td>{{controller.selectedCountry.EYS | number:1}}</td>
+              </tr>
+              <tr>
+                <td>Mean Years of Schooling</td>
+                <td>{{controller.selectedCountry.MYS | number:1}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <h4>Countries with similar HDI</h4>
+            <div ng-repeat="(region, countries) in controller.countriesWithSimilarHDI">
+            <strong>{{region}}</strong>:
+              <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
+                <span class="label label-primary" ng-show="!controller.showInequalityBand && country.noineq">{{country.Country}}</span>
+                <span class="label label-primary" ng-show="controller.showInequalityBand && country.ineq && country.noineq">{{country.Country}}</span>
+                <span class="label label-danger" ng-show="controller.showInequalityBand && !country.ineq && country.noineq"><del>{{country.Country}}</del></span>                
+                <span class="label label-warning" ng-show="controller.showInequalityBand && country.ineq && !country.noineq">{{country.Country}}</span>
+
+
+                <span ng-hide="$last"> </span>
+              </span>
+            </div>
+          </div> 
+        
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          <h4>Countries with similar {{controller.selectedIndicator}}</h4>       
+          <div ng-repeat="(region, countries) in controller.countriesWithSimilarIndicator">
+            <strong>{{region}}</strong>:
+            <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country"><span class="label label-primary">{{country.Country}}</span><span ng-hide="$last"> </span></span> 
+          </div>
+          
+        </div>
+  
       </div>
 
 
 
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <p> Relación Asistencia / SIMCE (datos SIMCE 4º Básico 2012 para estudiantes de la comuna de Santiago con asistencia registrada mayor a 0%)</p>
-        <div td-xy-chart class="col-md-12" td-data="controller.data" td-size-attribute="'population'" td-xattribute="'HDI'" td-yattribute="controller.selectedIndicator" td-tooltip-message="controller.tooltipMessage" td-min-size="5" td-max-size="20" td-color-attribute="'Region'" td-width="500" td-trendline="false" td-color-legend="controller.legend" td-drawing="controller.drawing" td-exclude-zero-x="true" td-id-attribute="'iso3'" td-selected="controller.selectedCountry" td-log-scale-y="controller.selectedIndicator=='GNI'" td-y-limits="controller.limits[controller.selectedIndicator]" td-x-limits="[0,1]" td-data-version="controller.dataVersion" td-highlight-x-band="controller.bands['HDI']" td-highlight-y-band="controller.bands[controller.selectedIndicator]" td-on-selected="controller.onSelected">    
-        </div>
-      </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <select ng-model="controller.selectedRegion" name="string" required ng-tequired="string" ng-options="value for value in controller.regions" ng-change="controller.selectRegion()" ng-multiple="true" multiple></select>
       </div>
 
@@ -62,9 +136,9 @@
 
       <div class="footer">
 
-        <p>Prototipo para uso en actividades de exploración de datos por parte de equipos del Ministerio de Educación.  No ha sido diseñado para uso en producción y/o difusión masiva.</p>
+        <p>Prototype for Human Development Indicator.</p>
 
-        <p>Tecnología de visualización por <a href="http://www.tide.cl" target="_blank">TIDE SA</a></p>
+        <p>Developed by <a href="http://www.tide.cl" target="_blank">TIDE SA</a>, Chile</p>
       </div>
 
 

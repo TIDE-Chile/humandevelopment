@@ -31,7 +31,8 @@ angular.module('tideApp')
     if (myself.dataHdi) {
       defer.resolve(myself.dataHdi);
     } else {
-      d3.tsv("./data/data-hdi.txt", function(data) {
+      //d3.tsv("./data/data-hdi.txt", function(data) {
+      d3.tsv("./data/data-consolidated-idh.txt", function(data) {
         if (data) {
           myself.dataHdi = data;
           defer.resolve(myself.dataHdi);
@@ -138,29 +139,65 @@ angular.module('tideApp')
       return d.iso3 == countryCode;
     })
 
+    var countriesSimilarHDI = [];
+    var countriesSimilarIHDI = [];
+    var countriesSimilarIHDIb = [];
+    var countriesSimilarIndicator = [];
+
     _.each(data, function(d) {
       switch(indicator) {
           case 'MYS':
               d.visible = similarMYS(target,d) || similarHDI(target,d);
+              if (similarMYS(target,d)) {
+                countriesSimilarIndicator.push(d);
+              }
               break;
           case 'EYS':
               d.visible = similarEYS(target,d) || similarHDI(target,d);
+              if (similarEYS(target,d)) {
+                countriesSimilarIndicator.push(d);
+              }
               break;
           case 'GNI':
               d.visible = similarGni(target,d) || similarHDI(target,d);
+              if (similarGni(target,d)) {
+                countriesSimilarIndicator.push(d);
+              }
               break;
           case 'LE':
+              if (similarLifeExp(target,d)) {
+                countriesSimilarIndicator.push(d);
+              }
               d.visible = similarLifeExp(target,d) || similarHDI(target,d);
               break;
           default:
               d.visible = similarGni(target,d) || similarHDI(target,d);
       }
-      //d.visible = Math.abs(d.EYS - target.EYS) < 1;
+      if (target !== d && (similarHDI(target,d) || countriesSimilarIHDIb.push(d))) {
+        d.noineq = similarHDI(target,d);
+        d.ineq = similarIHDIb(target,d);
+        countriesSimilarHDI.push(d);
+      }
+      if (similarIHDI(target,d)) {
+        countriesSimilarIHDI.push(d);
+      }
+      if (similarIHDIb(target,d)) {
+        countriesSimilarIHDIb.push(d);
+      }
+
     })
 
     var bands = similarityBands(target);
 
-    defer.resolve({"data":data,"bands":bands, "target": target});
+    defer.resolve({
+      "data":data,
+      "bands":bands, 
+      "target": target,
+      "similarHDI":_.groupBy(countriesSimilarHDI, function(d) {return d.Region}), 
+      "similarIHDI":_.groupBy(countriesSimilarIHDI, function(d) {return d.Region}), 
+      "similarIHDIb":_.groupBy(countriesSimilarIHDIb, function(d) {return d.Region}), 
+      "similarIndicator": _.groupBy(countriesSimilarIndicator, function(d) {return d.Region})
+    });
 
     return defer.promise;
   }
@@ -226,9 +263,18 @@ angular.module('tideApp')
     return Math.abs(a.HDI-b.HDI)<(similarytyIndexWidth/2);
   }
 
+  var similarIHDI = function(a,b) {
+    return Math.abs(a.IHDI-b.HDI)<(similarytyIndexWidth/2);
+  }
+
+  var similarIHDIb = function(a,b) {
+    return Math.abs(a.IHDI-b.IHDI)<(similarytyIndexWidth/2);
+  }
+
   var similarityBands = function(a) {
     var bands = {};
 
+    bands["IHDI"] = [a.IHDI-similarytyIndexWidth/2, +a.IHDI+similarytyIndexWidth/2]
     bands["HDI"] = [a.HDI-similarytyIndexWidth/2, +a.HDI+similarytyIndexWidth/2]
     bands["LE"] = [inverseIdxle(idxle(a.LE)-similarytyIndexWidth/2), inverseIdxle(+idxle(a.LE)+similarytyIndexWidth/2)]
     bands["GNI"] = [inverseIdxgni(idxgni(a.GNI)-similarytyIndexWidth/2), inverseIdxgni(+idxgni(a.GNI)+similarytyIndexWidth/2)]

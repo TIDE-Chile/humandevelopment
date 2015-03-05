@@ -78,7 +78,9 @@ angular.module("tide-angular")
         dataVersion : "=?tdDataVersion",
 
         highlightXBand : "=?tdHighlightXBand",
-        highlightYBand : "=?tdHighlightYBand"
+        highlightXAltBand : "=?tdHighlightXAltBand",
+        highlightYBand : "=?tdHighlightYBand",
+        activateAltXBand : "=?tdActivateAltXBand"
       },
       
       link: function (scope, element, attrs) {
@@ -126,14 +128,15 @@ angular.module("tide-angular")
           return  msg;
         });
 
-
-        var svgContainer = d3.select(element[0])
+        var svgMainContainer = d3.select(element[0])
           .append("svg")
           .attr("width", width+margin.left+margin.right)
           .attr("height", height+margin.top+margin.bottom)
-          .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+        var svgContainer = svgMainContainer
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top+ ")");
+ 
         var svgXAxis = svgContainer.append("g")
         .attr("class", "x axis")
         .attr("transform","translate(0," + height + ")")
@@ -167,10 +170,22 @@ angular.module("tide-angular")
         highLightBands.append("rect")
           .attr("class", "higlightBand y")
 
+        highLightBands.append("rect")
+          .attr("class", "higlightBand alt x");
+
+
+
 
         var trendLine = svgContainer.select(".trendline");
 
         var circles = svgContainer.selectAll("circle");
+
+        var resizeSvg = function() {
+          width = element.width()-margin.left-margin.right;
+          height = width;
+          svgMainContainer.attr("width",element.width())
+          svgMainContainer.attr("height",element.width())
+        }
 
 
         var render = function(data) {
@@ -263,12 +278,11 @@ angular.module("tide-angular")
               _.each(colorDomain, function(d) {
                 scope.colorLegend.push({key:d, color:colorScale(d), n:groupsByColorAttribute[d].length});
               })
-            }
+            }        
 
 
-
-
-            svgXAxis    
+            svgXAxis   
+              .attr("transform","translate(0," + height + ")")
               .call(xAxis);
 
             svgXAxis.selectAll("path, line")
@@ -353,7 +367,9 @@ angular.module("tide-angular")
               return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])? 'yellow' : colorScale(d[scope.colorAttribute]);
               //return colorScale(d[scope.colorAttribute])
             })
-            .attr("stroke", function(d) { return d3.rgb(colorScale(d[scope.colorAttribute])).darker(2); })
+            .attr("stroke", function(d) { 
+              return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])?  'black' : d3.rgb(colorScale(d[scope.colorAttribute])).darker(2); 
+            })
             .each("end", function() {
               scope.drawing = false;
               scope.$apply();
@@ -382,6 +398,21 @@ angular.module("tide-angular")
               .attr("stroke-width", 0)
               .attr("fill", "grey")
               .attr("opacity", 0.1)
+              .attr("x",xBandX)
+              .attr("y",0)
+              .attr("width",xBandWidth)
+              .attr("height",height)            
+          }
+
+          if (scope.highlightXAltBand && scope.activateAltXBand) {
+            var xBandX = layout.xScale()(scope.highlightXAltBand[0]);
+            var xBandWidth = layout.xScale()(scope.highlightXAltBand[1])-xBandX;
+            svgContainer.selectAll(".higlightBand.x.alt")
+              .transition()
+              .attr("stroke", "none")
+              .attr("stroke-width", 0)
+              .attr("fill", "red")
+              .attr("opacity", 0.2)
               .attr("x",xBandX)
               .attr("y",0)
               .attr("width",xBandWidth)
@@ -440,6 +471,15 @@ angular.module("tide-angular")
           render(scope.data);
         });      
 
+        scope.getElementDimensions = function () {
+          return { 'h': element.height(), 'w': element.width() };
+        };
+
+        scope.$watch(scope.getElementDimensions, function (newValue, oldValue) {
+          resizeSvg();
+          render(scope.data);
+        }, true);
+
         scope.$watch("sqrScaleX", function () {
           render(scope.data);
         });
@@ -465,6 +505,10 @@ angular.module("tide-angular")
         });
 
         scope.$watch("dataVersion", function () {
+          render(scope.data);
+        });
+
+        scope.$watch("activateAltXBand", function () {
           render(scope.data);
         });
 

@@ -951,40 +951,40 @@ Central African Republic	Africa	Middle Africa	CAF	2010	 0.355	 900.428047672	 48
 Central African Republic	Africa	Middle Africa	CAF	2011	 0.361	 917.715831654	 48.834	 7.2	 3.536	 4436217.0
 Central African Republic	Africa	Middle Africa	CAF	2012	 0.365	 937.228698172	 49.517	 7.2	 3.536	 4525209.0
 Central African Republic	Africa	Middle Africa	CAF	2013	 0.341	 587.855508428	 50.179	 7.2	 3.536	 4616417.0
-Canada	Northern America b/	Northern America b/	CAN	1980	 0.809	 25009.422657154	 74.967	 15.6	 9.483	 24593000.0
-Canada	Northern America b/	Northern America b/	CAN	1981	 0.811	 25219.865588204	 75.271	 15.6	 9.5646	 24900000.0
-Canada	Northern America b/	Northern America b/	CAN	1982	 0.815	 25604.262635376	 75.558	 15.6	 9.6462	 25202000.0
-Canada	Northern America b/	Northern America b/	CAN	1983	 0.815	 24475.414662318	 75.822	 15.6	 9.7278	 25456000.0
-Canada	Northern America b/	Northern America b/	CAN	1984	 0.818	 24949.089975318	 76.062	 15.6	 9.8094	 25702000.0
-Canada	Northern America b/	Northern America b/	CAN	1985	 0.822	 26040.982398205	 76.279	 15.6	 9.891	 25942000.0
-Canada	Northern America b/	Northern America b/	CAN	1986	 0.826	 26995.30547931	 76.478	 15.6	 9.982	 26204000.0
-Canada	Northern America b/	Northern America b/	CAN	1987	 0.831	 27281.811215873	 76.669	 15.833333333	 10.073	 26550000.0
-Canada	Northern America b/	Northern America b/	CAN	1988	 0.836	 28121.319281379	 76.857	 16.066666667	 10.164	 26895000.0
-Canada	Northern America b/	Northern America b/	CAN	1989	 0.842	 29093.164030909	 77.046	 16.3	 10.255	 27379000.0
-Canada	Northern America b/	Northern America b/	CAN	1990	 0.848	 29230.531291047	 77.234	 16.7	 10.346	 27791000.0
-Canada	Northern America b/	Northern America b/	CAN	1991	 0.852	 28312.910350611	 77.417	 17.0	 10.4188	 28171682.0
-Canada	Northern America b/	Northern America b/	CAN	1992	 0.855	 28135.160643792	 77.593	 17.2	 10.4916	 28519597.0
-Canada	Northern America b/	Northern America b/	CAN	1993	 0.853	 28534.100395044	 77.759	 16.8	 10.5644	 28833410.0
-Canada	Northern America b/	Northern America b/	CAN	1994	 0.858	 29572.181181424	 77.919	 16.9	 10.6372	 29111906.0
-Canada	Northern America b/	Northern America b/	CAN	1995	 0.86	 30174.083182619	 78.08	 16.9	 10.71	 29354000.0
-Canada	Northern America b/	Northern America b/	CAN	1996	 0.862	 30371.096629302	 78.249	 16.9	 10.7798	 29671900.0
-Canada	Northern America b/	Northern America b/	CAN	1997	 0.861	 31406.151656978	 78.433	 16.45	 10.8496	 29987200.0
-Canada	Northern America b/	Northern America b/	CAN	1998	 0.86	 32367.397473251	 78.634	 16.0	 10.9194	 30247900.0
-Canada	Northern America b/	Northern America b/	CAN	1999	 0.863	 33852.553316422	 78.851	 15.9	 10.9892	 30499200.0
-Canada	Northern America b/	Northern America b/	CAN	2000	 0.867	 35567.462430041	 79.079	 15.8	 11.059	 30769700.0
-Canada	Northern America b/	Northern America b/	CAN	2001	 0.872	 35761.261378914	 79.311	 15.9	 11.3162	 31081900.0
-Canada	Northern America b/	Northern America b/	CAN	2002	 0.878	 36606.233200975	 79.536	 15.9	 11.5734	 31362000.0
-Canada	Northern America b/	Northern America b/	CAN	2003	 0.882	 36963.234051598	 79.749	 15.9	 11.8306	 31676000.0
-Canada	Northern America b/	Northern America b/	CAN	2004	 0.887	 37845.257299291	 79.947	 15.9	 12.0878	 31995000.0
-Canada	Northern America b/	Northern America b/	CAN	2005	 0.892	 38660.229696138	 80.13	 15.9	 12.345	 32312000.0
-Canada	Northern America b/	Northern America b/	CAN	2006	 0.894	 39793.545332933	 80.304	 15.9	 12.3278	 32570505.0
-Canada	Northern America b/	Northern America b/	CAN	2007	 0.895	 40149.852648454	 80.473	 15.9	 12.3106	 32887928.0
-Canada	Northern America b/	Northern America b/	CAN	2008	 0.896	 39987.987901686	 80.643	 15.9	 12.2934	 33245773.0
-Canada	Northern America b/	Northern America b/	CAN	2009	 0.894	 38342.800313348	 80.814	 15.9	 12.2762	 33628571.0
-Canada	Northern America b/	Northern America b/	CAN	2010	 0.896	 39049.361286689	 80.986	 15.9	 12.259	 34005274.0
-Canada	Northern America b/	Northern America b/	CAN	2011	 0.9	 41332.530062501	 81.157	 15.9	 12.259	 34342780.0
-Canada	Northern America b/	Northern America b/	CAN	2012	 0.901	 41539.228456858	 81.323	 15.9	 12.259	 34754312.0
-Canada	Northern America b/	Northern America b/	CAN	2013	 0.902	 41886.816256589	 81.482	 15.9	 12.259	 35158304.0
+Canada	Northern America	Northern America	CAN	1980	 0.809	 25009.422657154	 74.967	 15.6	 9.483	 24593000.0
+Canada	Northern America	Northern America	CAN	1981	 0.811	 25219.865588204	 75.271	 15.6	 9.5646	 24900000.0
+Canada	Northern America	Northern America	CAN	1982	 0.815	 25604.262635376	 75.558	 15.6	 9.6462	 25202000.0
+Canada	Northern America	Northern America	CAN	1983	 0.815	 24475.414662318	 75.822	 15.6	 9.7278	 25456000.0
+Canada	Northern America	Northern America	CAN	1984	 0.818	 24949.089975318	 76.062	 15.6	 9.8094	 25702000.0
+Canada	Northern America	Northern America	CAN	1985	 0.822	 26040.982398205	 76.279	 15.6	 9.891	 25942000.0
+Canada	Northern America	Northern America	CAN	1986	 0.826	 26995.30547931	 76.478	 15.6	 9.982	 26204000.0
+Canada	Northern America	Northern America	CAN	1987	 0.831	 27281.811215873	 76.669	 15.833333333	 10.073	 26550000.0
+Canada	Northern America	Northern America	CAN	1988	 0.836	 28121.319281379	 76.857	 16.066666667	 10.164	 26895000.0
+Canada	Northern America	Northern America	CAN	1989	 0.842	 29093.164030909	 77.046	 16.3	 10.255	 27379000.0
+Canada	Northern America	Northern America	CAN	1990	 0.848	 29230.531291047	 77.234	 16.7	 10.346	 27791000.0
+Canada	Northern America	Northern America	CAN	1991	 0.852	 28312.910350611	 77.417	 17.0	 10.4188	 28171682.0
+Canada	Northern America	Northern America	CAN	1992	 0.855	 28135.160643792	 77.593	 17.2	 10.4916	 28519597.0
+Canada	Northern America	Northern America	CAN	1993	 0.853	 28534.100395044	 77.759	 16.8	 10.5644	 28833410.0
+Canada	Northern America	Northern America	CAN	1994	 0.858	 29572.181181424	 77.919	 16.9	 10.6372	 29111906.0
+Canada	Northern America	Northern America	CAN	1995	 0.86	 30174.083182619	 78.08	 16.9	 10.71	 29354000.0
+Canada	Northern America	Northern America	CAN	1996	 0.862	 30371.096629302	 78.249	 16.9	 10.7798	 29671900.0
+Canada	Northern America	Northern America	CAN	1997	 0.861	 31406.151656978	 78.433	 16.45	 10.8496	 29987200.0
+Canada	Northern America	Northern America	CAN	1998	 0.86	 32367.397473251	 78.634	 16.0	 10.9194	 30247900.0
+Canada	Northern America	Northern America	CAN	1999	 0.863	 33852.553316422	 78.851	 15.9	 10.9892	 30499200.0
+Canada	Northern America	Northern America	CAN	2000	 0.867	 35567.462430041	 79.079	 15.8	 11.059	 30769700.0
+Canada	Northern America	Northern America	CAN	2001	 0.872	 35761.261378914	 79.311	 15.9	 11.3162	 31081900.0
+Canada	Northern America	Northern America	CAN	2002	 0.878	 36606.233200975	 79.536	 15.9	 11.5734	 31362000.0
+Canada	Northern America	Northern America	CAN	2003	 0.882	 36963.234051598	 79.749	 15.9	 11.8306	 31676000.0
+Canada	Northern America	Northern America	CAN	2004	 0.887	 37845.257299291	 79.947	 15.9	 12.0878	 31995000.0
+Canada	Northern America	Northern America	CAN	2005	 0.892	 38660.229696138	 80.13	 15.9	 12.345	 32312000.0
+Canada	Northern America	Northern America	CAN	2006	 0.894	 39793.545332933	 80.304	 15.9	 12.3278	 32570505.0
+Canada	Northern America	Northern America	CAN	2007	 0.895	 40149.852648454	 80.473	 15.9	 12.3106	 32887928.0
+Canada	Northern America	Northern America	CAN	2008	 0.896	 39987.987901686	 80.643	 15.9	 12.2934	 33245773.0
+Canada	Northern America	Northern America	CAN	2009	 0.894	 38342.800313348	 80.814	 15.9	 12.2762	 33628571.0
+Canada	Northern America	Northern America	CAN	2010	 0.896	 39049.361286689	 80.986	 15.9	 12.259	 34005274.0
+Canada	Northern America	Northern America	CAN	2011	 0.9	 41332.530062501	 81.157	 15.9	 12.259	 34342780.0
+Canada	Northern America	Northern America	CAN	2012	 0.901	 41539.228456858	 81.323	 15.9	 12.259	 34754312.0
+Canada	Northern America	Northern America	CAN	2013	 0.902	 41886.816256589	 81.482	 15.9	 12.259	 35158304.0
 Switzerland	Europe	Western Europe	CHE	1980	 0.806	 38928.111856022	 75.664	 12.4	 10.0048	 6319408.0
 Switzerland	Europe	Western Europe	CHE	1981	 0.81	 40529.884021579	 75.853	 12.6	 9.9382	 6354074.0
 Switzerland	Europe	Western Europe	CHE	1982	 0.811	 41329.316246333	 76.046	 12.6	 9.8716	 6391309.0
@@ -6119,40 +6119,40 @@ Uruguay	Latin America and the Caribbean	South America	URY	2010	 0.779	 15707.643
 Uruguay	Latin America and the Caribbean	South America	URY	2011	 0.783	 16743.588611215	 76.938	 15.5	 8.376220703	 3383486.0
 Uruguay	Latin America and the Caribbean	South America	URY	2012	 0.787	 17438.551077975	 77.084	 15.5	 8.451206207	 3395253.0
 Uruguay	Latin America and the Caribbean	South America	URY	2013	 0.79	 18108.108008263	 77.23	 15.5	 8.451206207	 3407062.0
-United States	Northern America b/	Northern America b/	USA	1980	 0.825	 29632.673570685	 73.846	 14.1	 11.936	 227225000.0
-United States	Northern America b/	Northern America b/	USA	1981	 0.826	 29321.266432943	 74.062	 14.1	 11.9802	 229466000.0
-United States	Northern America b/	Northern America b/	USA	1982	 0.833	 29855.18112527	 74.24	 14.5	 12.0244	 231664000.0
-United States	Northern America b/	Northern America b/	USA	1983	 0.832	 29298.238583809	 74.389	 14.4	 12.0686	 233792000.0
-United States	Northern America b/	Northern America b/	USA	1984	 0.835	 29968.485941232	 74.516	 14.5	 12.1128	 235825000.0
-United States	Northern America b/	Northern America b/	USA	1985	 0.839	 31997.375076236	 74.629	 14.4	 12.157	 237924000.0
-United States	Northern America b/	Northern America b/	USA	1986	 0.843	 32882.120822507	 74.737	 14.6	 12.1936	 240133000.0
-United States	Northern America b/	Northern America b/	USA	1987	 0.847	 33484.690558927	 74.847	 14.8	 12.2302	 242289000.0
-United States	Northern America b/	Northern America b/	USA	1988	 0.851	 34622.941971099	 74.965	 14.933333333	 12.2668	 244499000.0
-United States	Northern America b/	Northern America b/	USA	1989	 0.855	 36081.310575083	 75.094	 15.066666667	 12.3034	 246819000.0
-United States	Northern America b/	Northern America b/	USA	1990	 0.858	 36637.888218423	 75.237	 15.2	 12.34	 249623000.0
-United States	Northern America b/	Northern America b/	USA	1991	 0.859	 36135.024739757	 75.392	 15.2	 12.4202	 252981000.0
-United States	Northern America b/	Northern America b/	USA	1992	 0.864	 36792.196525186	 75.553	 15.45	 12.5004	 256514000.0
-United States	Northern America b/	Northern America b/	USA	1993	 0.869	 37107.401420502	 75.715	 15.7	 12.5806	 259919000.0
-United States	Northern America b/	Northern America b/	USA	1994	 0.872	 38213.915185373	 75.876	 15.7	 12.6608	 263126000.0
-United States	Northern America b/	Northern America b/	USA	1995	 0.875	 39079.315515884	 76.034	 15.7	 12.741	 266278000.0
-United States	Northern America b/	Northern America b/	USA	1996	 0.877	 40294.764100232	 76.187	 15.7	 12.742091977	 269394000.0
-United States	Northern America b/	Northern America b/	USA	1997	 0.88	 41784.019002994	 76.335	 15.75	 12.743183953	 272657000.0
-United States	Northern America b/	Northern America b/	USA	1998	 0.883	 43451.998664637	 76.48	 15.8	 12.74427593	 275854000.0
-United States	Northern America b/	Northern America b/	USA	1999	 0.884	 44926.979114912	 76.624	 15.6	 12.745367906	 279040000.0
-United States	Northern America b/	Northern America b/	USA	2000	 0.883	 46551.227798068	 76.77	 15.3	 12.746459883	 282162411.0
-United States	Northern America b/	Northern America b/	USA	2001	 0.886	 46651.147205684	 76.923	 15.5	 12.74755186	 284968955.0
-United States	Northern America b/	Northern America b/	USA	2002	 0.887	 46829.924551568	 77.086	 15.5	 12.748643836	 287625193.0
-United States	Northern America b/	Northern America b/	USA	2003	 0.891	 47541.380140874	 77.26	 15.7	 12.749735813	 290107933.0
-United States	Northern America b/	Northern America b/	USA	2004	 0.894	 48936.199667587	 77.445	 15.8	 12.750827789	 292805298.0
-United States	Northern America b/	Northern America b/	USA	2005	 0.897	 50203.09268476	 77.635	 15.9	 12.753546715	 295516599.0
-United States	Northern America b/	Northern America b/	USA	2006	 0.9	 51589.508906516	 77.826	 15.9	 12.835446358	 298379912.0
-United States	Northern America b/	Northern America b/	USA	2007	 0.903	 51347.055054562	 78.011	 16.1	 12.87363863	 301231207.0
-United States	Northern America b/	Northern America b/	USA	2008	 0.905	 50596.904448529	 78.187	 16.2	 12.911830902	 304093966.0
-United States	Northern America b/	Northern America b/	USA	2009	 0.905	 48761.192774174	 78.352	 16.3	 12.927170753	 306771529.0
-United States	Northern America b/	Northern America b/	USA	2010	 0.908	 49849.268372961	 78.507	 16.4	 12.942776211	 309326295.0
-United States	Northern America b/	Northern America b/	USA	2011	 0.911	 50863.028610849	 78.654	 16.5	 12.942776211	 311582564.0
-United States	Northern America b/	Northern America b/	USA	2012	 0.912	 51706.633947875	 78.797	 16.5	 12.942776211	 313873685.0
-United States	Northern America b/	Northern America b/	USA	2013	 0.914	 52308.379536974	 78.941	 16.5	 12.942776211	 316128839.0
+United States	Northern America	Northern America	USA	1980	 0.825	 29632.673570685	 73.846	 14.1	 11.936	 227225000.0
+United States	Northern America	Northern America	USA	1981	 0.826	 29321.266432943	 74.062	 14.1	 11.9802	 229466000.0
+United States	Northern America	Northern America	USA	1982	 0.833	 29855.18112527	 74.24	 14.5	 12.0244	 231664000.0
+United States	Northern America	Northern America	USA	1983	 0.832	 29298.238583809	 74.389	 14.4	 12.0686	 233792000.0
+United States	Northern America	Northern America	USA	1984	 0.835	 29968.485941232	 74.516	 14.5	 12.1128	 235825000.0
+United States	Northern America	Northern America	USA	1985	 0.839	 31997.375076236	 74.629	 14.4	 12.157	 237924000.0
+United States	Northern America	Northern America	USA	1986	 0.843	 32882.120822507	 74.737	 14.6	 12.1936	 240133000.0
+United States	Northern America	Northern America	USA	1987	 0.847	 33484.690558927	 74.847	 14.8	 12.2302	 242289000.0
+United States	Northern America	Northern America	USA	1988	 0.851	 34622.941971099	 74.965	 14.933333333	 12.2668	 244499000.0
+United States	Northern America	Northern America	USA	1989	 0.855	 36081.310575083	 75.094	 15.066666667	 12.3034	 246819000.0
+United States	Northern America	Northern America	USA	1990	 0.858	 36637.888218423	 75.237	 15.2	 12.34	 249623000.0
+United States	Northern America	Northern America	USA	1991	 0.859	 36135.024739757	 75.392	 15.2	 12.4202	 252981000.0
+United States	Northern America	Northern America	USA	1992	 0.864	 36792.196525186	 75.553	 15.45	 12.5004	 256514000.0
+United States	Northern America	Northern America	USA	1993	 0.869	 37107.401420502	 75.715	 15.7	 12.5806	 259919000.0
+United States	Northern America	Northern America	USA	1994	 0.872	 38213.915185373	 75.876	 15.7	 12.6608	 263126000.0
+United States	Northern America	Northern America	USA	1995	 0.875	 39079.315515884	 76.034	 15.7	 12.741	 266278000.0
+United States	Northern America	Northern America	USA	1996	 0.877	 40294.764100232	 76.187	 15.7	 12.742091977	 269394000.0
+United States	Northern America	Northern America	USA	1997	 0.88	 41784.019002994	 76.335	 15.75	 12.743183953	 272657000.0
+United States	Northern America	Northern America	USA	1998	 0.883	 43451.998664637	 76.48	 15.8	 12.74427593	 275854000.0
+United States	Northern America	Northern America	USA	1999	 0.884	 44926.979114912	 76.624	 15.6	 12.745367906	 279040000.0
+United States	Northern America	Northern America	USA	2000	 0.883	 46551.227798068	 76.77	 15.3	 12.746459883	 282162411.0
+United States	Northern America	Northern America	USA	2001	 0.886	 46651.147205684	 76.923	 15.5	 12.74755186	 284968955.0
+United States	Northern America	Northern America	USA	2002	 0.887	 46829.924551568	 77.086	 15.5	 12.748643836	 287625193.0
+United States	Northern America	Northern America	USA	2003	 0.891	 47541.380140874	 77.26	 15.7	 12.749735813	 290107933.0
+United States	Northern America	Northern America	USA	2004	 0.894	 48936.199667587	 77.445	 15.8	 12.750827789	 292805298.0
+United States	Northern America	Northern America	USA	2005	 0.897	 50203.09268476	 77.635	 15.9	 12.753546715	 295516599.0
+United States	Northern America	Northern America	USA	2006	 0.9	 51589.508906516	 77.826	 15.9	 12.835446358	 298379912.0
+United States	Northern America	Northern America	USA	2007	 0.903	 51347.055054562	 78.011	 16.1	 12.87363863	 301231207.0
+United States	Northern America	Northern America	USA	2008	 0.905	 50596.904448529	 78.187	 16.2	 12.911830902	 304093966.0
+United States	Northern America	Northern America	USA	2009	 0.905	 48761.192774174	 78.352	 16.3	 12.927170753	 306771529.0
+United States	Northern America	Northern America	USA	2010	 0.908	 49849.268372961	 78.507	 16.4	 12.942776211	 309326295.0
+United States	Northern America	Northern America	USA	2011	 0.911	 50863.028610849	 78.654	 16.5	 12.942776211	 311582564.0
+United States	Northern America	Northern America	USA	2012	 0.912	 51706.633947875	 78.797	 16.5	 12.942776211	 313873685.0
+United States	Northern America	Northern America	USA	2013	 0.914	 52308.379536974	 78.941	 16.5	 12.942776211	 316128839.0
 Uzbekistan	Asia	Central Asia	UZB	1980			 65.472			 16026812.0
 Uzbekistan	Asia	Central Asia	UZB	1981			 65.792			 16454356.0
 Uzbekistan	Asia	Central Asia	UZB	1982			 66.12			 16889450.0

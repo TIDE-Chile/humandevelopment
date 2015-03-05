@@ -8,6 +8,11 @@
     display: none;
 }
 
+.similar.country {
+  cursor: pointer;
+  white-space: normal;
+}
+
 .node rect {
   cursor: move;
   fill-opacity: .9;
