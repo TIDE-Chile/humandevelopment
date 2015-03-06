@@ -8,6 +8,14 @@
     display: none;
 }
 
+.flag {
+     border: 1px solid black;
+}
+
+.similarity-panel .col-md-6:nth-child(2n+1) {
+    clear: both;
+}
+
 .similar.country {
   cursor: pointer;
   white-space: normal;

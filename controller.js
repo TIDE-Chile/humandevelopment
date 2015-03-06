@@ -36,11 +36,19 @@ angular.module('tideApp')
 
     this.dataVersion=0;
 
+    this.ineqTooltip = function() {
+        var msg = null;
+        if (!(myself.selectedCountry.IHDI > 0)) {
+            msg = "Not available for "+myself.selectedCountry.Country+" on "+myself.selectedYear;
+        }
+        return msg;
+    }
+
     this.indicators=[
-        {code: "GNI", label: "Income (GNI ppp)"},
-        {code: "LE", label: "Life expectancy"},
-        {code: "MYS", label: "Mean of school years"},
-        {code: "EYS", label: "Expected school years"}
+        {code: "GNI", label: "Standard of living (Gross national income per capita)", icon:"glyphicon-usd"},
+        {code: "LE", label: "Health (Life expectancy)", icon:"glyphicon-heart"},
+        {code: "MYS", label: "Education (Mean years of schooling)", icon:"glyphicon-education"},
+        {code: "EYS", label: "Education (Expected years of schooling)", icon:"glyphicon-education"}
     ];
     this.years=["2013", "2000", "1995", "1990","1985", "1980"];
     this.selectedIndicator = this.indicators[0].code;
@@ -67,6 +75,10 @@ angular.module('tideApp')
         return msg;
     }
 
+    this.kk = function() {
+        myself.targetCountry = myself.selectedCountry.iso3;
+        myself.load();
+    }
 
     this.changeSelection = function() {
         myself.load();
@@ -94,6 +106,15 @@ angular.module('tideApp')
         myself.load();
     }
 
+    this.ontype = function(item,model,label) {
+        if (item && item.iso3) {
+            myself.targetCountry=item.iso3;
+            myself.searchedCountry=null
+            myself.load();   
+        }
+
+    }
+
 
     this.changeIndicator = function() { 
         myself.load();
@@ -116,15 +137,20 @@ angular.module('tideApp')
         .then(function(data) {
             return dataService.similarTo(data, myself.targetCountry, myself.selectedIndicator);
         }).then(function(result) {
+            console.log("loaded")
             myself.selectedCountry = result.target;
             myself.bands = result.bands;
             myself.data = result.data;
-            myself.countriesWithSimilarHDI = result.similarHDI;
-            myself.countriesWithSimilarIHDI = result.similarIHDI;
-            myself.countriesWithSimilarIHDIb = result.similarIHDIb;
-            myself.countriesWithSimilarIndicator = result.similarIndicator;
+
+            // For some reason the typeahead delays update of data on the directive
+            // This is a trick to force update
+            $scope.$apply(function() {
+               myself.dataVersion += 1; 
+            })
+
+            myself.similarCountries = result.similarCountries;
             myself.showInequalityBand = +myself.selectedCountry.IHDI > 0 ? myself.showInequalityBand : false;
- 
+    
         })
         
     }

@@ -139,6 +139,14 @@ angular.module('tideApp')
       return d.iso3 == countryCode;
     })
 
+    var similarCountries = {
+      'HDI':[],
+      'IHDI':[],
+      'GNI':[],
+      'LE':[],
+      'MYS':[],
+      'EYS':[]
+    }
     var countriesSimilarHDI = [];
     var countriesSimilarIHDI = [];
     var countriesSimilarIHDIb = [];
@@ -148,32 +156,46 @@ angular.module('tideApp')
       switch(indicator) {
           case 'MYS':
               d.visible = similarMYS(target,d) || similarHDI(target,d);
-              if (similarMYS(target,d)) {
-                countriesSimilarIndicator.push(d);
-              }
               break;
           case 'EYS':
               d.visible = similarEYS(target,d) || similarHDI(target,d);
-              if (similarEYS(target,d)) {
-                countriesSimilarIndicator.push(d);
-              }
               break;
           case 'GNI':
-              d.visible = similarGni(target,d) || similarHDI(target,d);
-              if (similarGni(target,d)) {
-                countriesSimilarIndicator.push(d);
-              }
+              d.visible = similarGNI(target,d) || similarHDI(target,d);
               break;
           case 'LE':
-              if (similarLifeExp(target,d)) {
-                countriesSimilarIndicator.push(d);
-              }
-              d.visible = similarLifeExp(target,d) || similarHDI(target,d);
+              d.visible = similarLE(target,d) || similarHDI(target,d);
               break;
           default:
-              d.visible = similarGni(target,d) || similarHDI(target,d);
+              d.visible = similarGNI(target,d) || similarHDI(target,d);
       }
-      if (target !== d && (similarHDI(target,d) || countriesSimilarIHDIb.push(d))) {
+
+      // Add similar countries to list (excluding target)
+      if (target !== d) {
+        if (similarHDI(target,d)) {
+          similarCountries['HDI'].push(d);
+        }
+        if (+d.IHDI>0 && similarIHDI(target,d)) {
+          similarCountries['IHDI'].push(d);
+          // Mark those who are similar by IHDI but not HDI 
+          d.inequalityFlag = similarHDI(target,d) ? false : true;
+        }
+        if (similarGNI(target,d)) {
+          similarCountries['GNI'].push(d);
+        }
+        if (similarLE(target,d)) {
+          similarCountries['LE'].push(d);
+        }
+        if (similarEYS(target,d)) {
+          similarCountries['EYS'].push(d);
+        }
+        if (similarMYS(target,d)) {
+          similarCountries['MYS'].push(d);
+        }
+      } 
+
+/*
+      && (similarHDI(target,d) || countriesSimilarIHDIb.push(d))) {
         d.noineq = similarHDI(target,d);
         d.ineq = similarIHDIb(target,d);
         countriesSimilarHDI.push(d);
@@ -184,19 +206,31 @@ angular.module('tideApp')
       if (similarIHDIb(target,d)) {
         countriesSimilarIHDIb.push(d);
       }
+      */
 
     })
 
     var bands = similarityBands(target);
 
+    similarCountries['HDI'] = _.groupBy(similarCountries['HDI'], function(d) {return d.Region});
+    similarCountries['IHDI'] = _.groupBy(similarCountries['IHDI'], function(d) {return d.Region});
+    similarCountries['GNI'] = _.groupBy(similarCountries['GNI'], function(d) {return d.Region});
+    similarCountries['LE'] = _.groupBy(similarCountries['LE'], function(d) {return d.Region});
+    similarCountries['EYS'] = _.groupBy(similarCountries['EYS'], function(d) {return d.Region});
+    similarCountries['MYS'] = _.groupBy(similarCountries['MYS'], function(d) {return d.Region});
+
+
     defer.resolve({
       "data":data,
       "bands":bands, 
       "target": target,
+      "similarCountries":similarCountries
+      /*
       "similarHDI":_.groupBy(countriesSimilarHDI, function(d) {return d.Region}), 
       "similarIHDI":_.groupBy(countriesSimilarIHDI, function(d) {return d.Region}), 
       "similarIHDIb":_.groupBy(countriesSimilarIHDIb, function(d) {return d.Region}), 
       "similarIndicator": _.groupBy(countriesSimilarIndicator, function(d) {return d.Region})
+      */
     });
 
     return defer.promise;
@@ -243,11 +277,11 @@ angular.module('tideApp')
   }
 
 
-  var similarLifeExp = function(a,b) {
+  var similarLE = function(a,b) {
     return Math.abs(idxle(a.LE)-idxle(b.LE))<(similarytyIndexWidth/2);
   }
 
-  var similarGni = function(a,b) {
+  var similarGNI = function(a,b) {
     return Math.abs(idxgni(a.GNI)-idxgni(b.GNI))<(similarytyIndexWidth/2);
   }
 
@@ -264,10 +298,6 @@ angular.module('tideApp')
   }
 
   var similarIHDI = function(a,b) {
-    return Math.abs(a.IHDI-b.HDI)<(similarytyIndexWidth/2);
-  }
-
-  var similarIHDIb = function(a,b) {
     return Math.abs(a.IHDI-b.IHDI)<(similarytyIndexWidth/2);
   }
 

@@ -37,6 +37,7 @@ angular.module("tide-angular")
 .directive("tdXyChart",["$compile","_", "d3","tideLayoutXY","linearRegression", "toolTip",function ($compile,_, d3, layout, regression, tooltip) {
  return {
   restrict: "A",
+      require: '?ngModel', // get a hold of NgModelController
       //transclude: false,
       //template: "<div style='background-color:red' ng-transclude></div>",
       scope: {
@@ -83,7 +84,7 @@ angular.module("tide-angular")
         activateAltXBand : "=?tdActivateAltXBand"
       },
       
-      link: function (scope, element, attrs) {
+      link: function (scope, element, attrs, ngModel) {
         var width = scope.width ? scope.width : 300;
         var height = scope.width ? scope.width : 300;
         var margin = {};
@@ -179,6 +180,7 @@ angular.module("tide-angular")
         var trendLine = svgContainer.select(".trendline");
 
         var circles = svgContainer.selectAll("circle");
+        var flags = svgContainer.selectAll(".flag");
 
         var resizeSvg = function() {
           width = element.width()-margin.left-margin.right;
@@ -186,7 +188,6 @@ angular.module("tide-angular")
           svgMainContainer.attr("width",element.width())
           svgMainContainer.attr("height",element.width())
         }
-
 
         var render = function(data) {
           if (data) {
@@ -296,6 +297,105 @@ angular.module("tide-angular")
               .attr("fill","none")
               .attr("stroke", "black");
 
+            flags = svgContainer.selectAll(".flag")
+            .data(nodes, function(d) {return d[scope.idAttribute];});
+            
+            flags.exit()
+              .transition()
+              .remove();
+
+            var newflags = flags.enter()
+              .append("g")
+              .attr("class","flag")
+              .attr("transform", function(d) {
+                return "translate(" + (+d.x) + "," + (+d.y)+ ")";
+              })
+              .attr("opacity", function(d) {
+                return 0; 
+              })           
+              .on("click", function(d) {
+                if ((!scope.selected) || ((scope.selected[scope.idAttribute]) && (d[scope.idAttribute] != scope.selected[scope.idAttribute]))) {
+                  // Select the node - save in the scope 
+                  scope.$apply(function(){
+                    scope.selected = d;
+                  });
+
+                  scope.onSelected(d);
+                } else {
+                  // Unselect the node 
+                  scope.$apply(function(){
+                    scope.selected = null;
+                  });
+                }
+
+              })              
+              .on("mouseenter", function(d) {
+                dataPointTooltip.show(d);
+              })
+              .on("mouseleave", function() {
+                dataPointTooltip.hide();
+              });
+
+            newflags
+              .append("image")
+              .attr("xlink:href", function(d) {
+                return "http://geotree.geonames.org/img/flags18/"+d.iso2+".png"
+              })
+              .attr("x", function(d) {
+                return -9;
+              })
+              .attr("y", function(d) {
+                return -9;
+              })  
+              .attr("width", "18")
+              .attr("height", "18")
+  
+            newflags
+              .append("rect")
+              .attr("x", function(d) {
+                return -10;
+              })
+              .attr("y", function(d) {
+                return -7;
+              })  
+              .attr("width", "20")
+              .attr("height", "14")
+              .attr("fill", "none")
+              .attr("stroke", "none")
+
+            flags
+            .sort(function(a, b) {return scope.selected && a[scope.idAttribute] == scope.selected[scope.idAttribute]? 1 : scope.selected && b[scope.idAttribute] == scope.selected[scope.idAttribute] ? -1 : 0})
+            .transition()
+            .duration(1000)
+            .attr("transform", function(d) {
+                return "translate(" + (+d.x) + "," + (+d.y)+ ")";
+            })
+            .attr("opacity", function(d) {
+              return d.visible == true ? 0.9 : 0.5; 
+            })
+            .attr("stroke-width", function(d) {
+              return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])? 2 : 1;
+            })
+            .attr("stroke", function(d) { 
+              return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])?  'black' : d3.rgb(colorScale(d[scope.colorAttribute])).darker(2); 
+            })
+            .each("end", function() {
+              scope.drawing = false;
+              scope.$apply();
+            })   
+
+            flags.selectAll("rect")
+              .attr("stroke-width", function(d) {
+                return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])? 2 : 0;
+              })
+              .attr("stroke", function(d) { 
+                return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])?  'black' : null; 
+              })
+
+
+
+/*
+
             circles = svgContainer.selectAll("circle")
             .data(nodes, function(d) {return d[scope.idAttribute];});
 
@@ -374,7 +474,7 @@ angular.module("tide-angular")
               scope.drawing = false;
               scope.$apply();
             })       
-
+*/
             svgXAxisText
               .text(scope.xAttribute);
 
@@ -434,6 +534,9 @@ angular.module("tide-angular")
               .attr("height",yBandHeight)            
           } 
 
+          // Specify how UI should be updated
+          //ngModel.$render = render;
+
 
 
           //Redraw trendline to place it on top of datapoints
@@ -468,6 +571,7 @@ angular.module("tide-angular")
         };
 
         scope.$watch("data", function () {
+          console.log("changed data");
           render(scope.data);
         });      
 
