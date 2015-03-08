@@ -50,6 +50,16 @@ angular.module('tideApp')
         {code: "MYS", label: "Education (Mean years of schooling)", icon:"glyphicon-education"},
         {code: "EYS", label: "Education (Expected years of schooling)", icon:"glyphicon-education"}
     ];
+
+    this.indicatorAxisLabel={
+        "GNI": "Gross national income per capita (2011 PPP $)",
+        "LE": "Life expectancy at birth (years)",
+        "MYS": "Mean years of schooling (years)",
+        "EYS": "Expected years of schooling (years)"
+    };
+
+
+
     this.years=["2013", "2000", "1995", "1990","1985", "1980"];
     this.selectedIndicator = this.indicators[0].code;
     this.selectedYear = this.years[0];
@@ -71,7 +81,7 @@ angular.module('tideApp')
         var number = d3.format(",")
         var percentage = d3.format(".1%")
 
-        var msg = "Pais: "+ d.Country+"<br>";
+        var msg = "<h4>"+d.Country+"</h4>";
         return msg;
     }
 

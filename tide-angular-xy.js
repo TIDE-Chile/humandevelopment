@@ -50,6 +50,10 @@ angular.module("tide-angular")
         tooltipMessage: "=?tdTooltipMessage",
         highlight: "=tdHighlight",
 
+        xLabel: "=tdXLabel",
+        yLabel: "=tdYLabel",
+
+
         width: "=?tdWidth",
         trendline : "=?tdTrendline",
 
@@ -91,7 +95,7 @@ angular.module("tide-angular")
         margin.left = scope.options && scope.options.margin && scope.options.margin.left ? scope.options.margin.left : 100;
         margin.right = 20;
         margin.top = 20;
-        margin.bottom = 50;
+        margin.bottom = 20;
 
         // Default: not drawing
         scope.drawing = false;
@@ -99,6 +103,9 @@ angular.module("tide-angular")
 
         // Setup scope default values if not assigned
         scope.idAttribute = scope.idAttribute ? scope.idAttribute : "id";
+
+        var xLabel = scope.xLabel ? scope.xLabel : scope.xAttribute;
+        var yLabel = scope.yLabel ? scope.yLabel : scope.yAttribute;
 
         // Define dataPoints tooltip generator
         var dataPointTooltip = tooltip();
@@ -153,7 +160,7 @@ angular.module("tide-angular")
         .attr("x", width )
         .attr("y", -6)
         .style("text-anchor", "end")
-        .text(scope.xAttribute);
+        .text(xLabel);
 
         var svgYAxisText = svgYAxis
         .append("text")
@@ -162,11 +169,12 @@ angular.module("tide-angular")
         .attr("y", -margin.left)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text(scope.yAttribute);
+        .text(yLabel);
 
         var highLightBands = svgContainer.append("g");
         highLightBands.append("rect")
-          .attr("class", "higlightBand x");
+          .attr("class", "higlightBand x")
+          .attr("tooltip", "Similar HDI")
 
         highLightBands.append("rect")
           .attr("class", "higlightBand y")
@@ -184,9 +192,9 @@ angular.module("tide-angular")
 
         var resizeSvg = function() {
           width = element.width()-margin.left-margin.right;
-          height = width;
+          height = width-margin.top-margin.bottom;
           svgMainContainer.attr("width",element.width())
-          svgMainContainer.attr("height",element.width())
+          svgMainContainer.attr("height",height+margin.top+margin.bottom)
         }
 
         var render = function(data) {
@@ -200,6 +208,9 @@ angular.module("tide-angular")
 
               return accepted;
             });
+
+            xLabel = scope.xLabel ? scope.xLabel : scope.xAttribute;
+            yLabel = scope.yLabel ? scope.yLabel : scope.yAttribute;
 
             if (data.length) {scope.drawing = true;}
             
@@ -353,13 +364,13 @@ angular.module("tide-angular")
             newflags
               .append("rect")
               .attr("x", function(d) {
-                return -10;
+                return -12;
               })
               .attr("y", function(d) {
-                return -7;
+                return -8;
               })  
-              .attr("width", "20")
-              .attr("height", "14")
+              .attr("width", "24")
+              .attr("height", "16")
               .attr("fill", "none")
               .attr("stroke", "none")
 
@@ -371,7 +382,7 @@ angular.module("tide-angular")
                 return "translate(" + (+d.x) + "," + (+d.y)+ ")";
             })
             .attr("opacity", function(d) {
-              return d.visible == true ? 0.9 : 0.5; 
+              return d.visible == true ? 0.9 : 0.9; 
             })
             .attr("stroke-width", function(d) {
               return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])? 2 : 1;
@@ -476,10 +487,10 @@ angular.module("tide-angular")
             })       
 */
             svgXAxisText
-              .text(scope.xAttribute);
+              .text(xLabel);
 
             svgYAxisText
-              .text(scope.yAttribute);
+              .text(yLabel);
 
             // Trend Line - Linear Regression
             var datapoints = _.map(nodes, function(d) {return [+d[scope.xAttribute], +d[scope.yAttribute]];});
