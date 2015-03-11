@@ -52,6 +52,7 @@ angular.module("tide-angular")
 
         xLabel: "=tdXLabel",
         yLabel: "=tdYLabel",
+        yearLabel: "=?tdYearLabel",
 
 
         width: "=?tdWidth",
@@ -90,7 +91,7 @@ angular.module("tide-angular")
       
       link: function (scope, element, attrs, ngModel) {
         var width = scope.width ? scope.width : 300;
-        var height = scope.width ? scope.width : 300;
+        var height = scope.width ? scope.width*0.8 : 300;
         var margin = {};
         margin.left = scope.options && scope.options.margin && scope.options.margin.left ? scope.options.margin.left : 100;
         margin.right = 20;
@@ -171,20 +172,35 @@ angular.module("tide-angular")
         .style("text-anchor", "end")
         .text(yLabel);
 
+        /* Initialize tooltip */
+        var tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d; });
+
+        /* Invoke the tip in the context of your visualization */
+        svgContainer.call(tip)
+
+
         var highLightBands = svgContainer.append("g");
         highLightBands.append("rect")
-          .attr("class", "higlightBand x")
-          .attr("tooltip", "Similar HDI")
+          .attr("class", "highlightBand x")
+          .on('mouseover', tip.show)
+          .on('mouseout', tip.hide)        
 
         highLightBands.append("rect")
-          .attr("class", "higlightBand y")
+          .attr("class", "highlightBand y")
 
         highLightBands.append("rect")
-          .attr("class", "higlightBand alt x");
+          .attr("class", "highlightBand alt x");
+
+        var yearLabel = svgContainer.append("text")
+          .attr("y", 50)
+          .attr("x", 10)
+          .attr("font-family", "sans-serif")
+          .attr("font-size", 50)
+          .attr("fill", "#DDD")
 
 
 
-
+          //<text x="70" y="70" font-family="sans-serif" font-size="20px" fill="red"
         var trendLine = svgContainer.select(".trendline");
 
         var circles = svgContainer.selectAll("circle");
@@ -192,7 +208,7 @@ angular.module("tide-angular")
 
         var resizeSvg = function() {
           width = element.width()-margin.left-margin.right;
-          height = width-margin.top-margin.bottom;
+          height = width*0.8//-margin.top-margin.bottom;
           svgMainContainer.attr("width",element.width())
           svgMainContainer.attr("height",height+margin.top+margin.bottom)
         }
@@ -364,25 +380,34 @@ angular.module("tide-angular")
             newflags
               .append("rect")
               .attr("x", function(d) {
-                return -12;
+                return -13;
               })
               .attr("y", function(d) {
-                return -8;
+                return -9;
               })  
-              .attr("width", "24")
-              .attr("height", "16")
+              .attr("width", "26")
+              .attr("height", "18")
               .attr("fill", "none")
               .attr("stroke", "none")
 
+
             flags
-            .sort(function(a, b) {return scope.selected && a[scope.idAttribute] == scope.selected[scope.idAttribute]? 1 : scope.selected && b[scope.idAttribute] == scope.selected[scope.idAttribute] ? -1 : 0})
+            .sort(function(a, b) {
+              var sortvalue = 0;
+
+              sortvalue = scope.selected && a[scope.idAttribute] == scope.selected[scope.idAttribute]? 1 : scope.selected && b[scope.idAttribute] == scope.selected[scope.idAttribute] ? -1 : 0
+
+              sortvalue = a['hide'] ? -1 : sortvalue;
+              return sortvalue;
+            })
             .transition()
+            //.ease("linear")
             .duration(1000)
             .attr("transform", function(d) {
                 return "translate(" + (+d.x) + "," + (+d.y)+ ")";
             })
             .attr("opacity", function(d) {
-              return d.visible == true ? 0.9 : 0.9; 
+              return d.hide == true ? 0 : 1; 
             })
             .attr("stroke-width", function(d) {
               return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])? 2 : 1;
@@ -395,16 +420,42 @@ angular.module("tide-angular")
               scope.$apply();
             })   
 
+            flags
+            .on("mouseenter", function(d) {
+              if (d.hide != true) {
+                dataPointTooltip.show(d);
+              } 
+            })
+
+
             flags.selectAll("rect")
               .attr("stroke-width", function(d) {
                 return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])? 2 : 0;
               })
               .attr("stroke", function(d) { 
-                return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])?  'black' : null; 
+                return scope.selected && (d[scope.idAttribute] == scope.selected[scope.idAttribute])?  '#333' : null; 
               })
 
 
+             var flagsize = function(selection) {
+                selection
+                .attr("width", function(d) {
+                  return scope.selected && d[scope.idAttribute] == scope.selected[scope.idAttribute] ? 24 : 18;
+                })
+                .attr("height", function(d) {
+                  return scope.selected && d[scope.idAttribute] == scope.selected[scope.idAttribute] ? 24 : 18;
+                })
+                .attr("x", function(d) {
+                  return scope.selected && d[scope.idAttribute] == scope.selected[scope.idAttribute] ? -12 : -9;
+                })
+                .attr("y", function(d) {
+                  return scope.selected && d[scope.idAttribute] == scope.selected[scope.idAttribute] ? -12 : -9;
+                })
+             }
 
+            flags.selectAll("image")
+              .call(flagsize)
+           
 /*
 
             circles = svgContainer.selectAll("circle")
@@ -503,7 +554,7 @@ angular.module("tide-angular")
           if (scope.highlightXBand) {
             var xBandX = layout.xScale()(scope.highlightXBand[0]);
             var xBandWidth = layout.xScale()(scope.highlightXBand[1])-xBandX;
-            svgContainer.selectAll(".higlightBand.x")
+            svgContainer.selectAll(".highlightBand.x")
               .transition()
               .attr("stroke", "none")
               .attr("stroke-width", 0)
@@ -518,7 +569,7 @@ angular.module("tide-angular")
           if (scope.highlightXAltBand && scope.activateAltXBand) {
             var xBandX = layout.xScale()(scope.highlightXAltBand[0]);
             var xBandWidth = layout.xScale()(scope.highlightXAltBand[1])-xBandX;
-            svgContainer.selectAll(".higlightBand.x.alt")
+            svgContainer.selectAll(".highlightBand.x.alt")
               .transition()
               .attr("stroke", "none")
               .attr("stroke-width", 0)
@@ -533,7 +584,7 @@ angular.module("tide-angular")
           if (scope.highlightYBand) {
             var yBandY = layout.yScale()(scope.highlightYBand[1]);
             var yBandHeight = layout.yScale()(scope.highlightYBand[0])-yBandY;
-            svgContainer.selectAll(".higlightBand.y")
+            svgContainer.selectAll(".highlightBand.y")
               .transition()
               .attr("stroke", "none")
               .attr("stroke-width", 0)
@@ -577,6 +628,10 @@ angular.module("tide-angular")
           }
 
           }
+
+          yearLabel
+          .transition().duration(1000)
+          .text(scope.yearLabel);
 
           
         };

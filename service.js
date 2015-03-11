@@ -45,24 +45,6 @@ angular.module('tideApp')
     return defer.promise;
   }
 
-  this.getDataIHDI = function() {
-    var defer = $q.defer();
-
-    if (myself.data) {
-      defer.resolve(myself.data);
-    } else {
-      d3.tsv("./data/data-ihdi.txt", function(data) {
-        if (data) {
-          myself.data = data;
-          defer.resolve(myself.data);
-        } else {
-          defer.reject();
-        }
-      })
-    }
-
-    return defer.promise;
-  }
 
   this.getDataHDIYear = function(year) {
     var defer = $q.defer();
@@ -78,11 +60,35 @@ angular.module('tideApp')
     return defer.promise;
   }
 
+  this.focusRegion = function(data, region) {
+    var defer = $q.defer();
+
+    _.each(data, function(d) {
+      d.hide = (region && (d.Region != region));
+    })
+
+    defer.resolve(data);
+
+    return defer.promise;
+  }
+
   this.selectRegion = function(data, regiones) {
     var defer = $q.defer();
 
     _.each(data, function(d) {
-      d.visible = regiones.indexOf(d.Region) > -1
+      d.hide = regiones && regiones.indexOf(d.Region) == -1
+    })
+
+    defer.resolve(data);
+
+    return defer.promise;
+  }
+
+  this.selectAllRegions = function(data, regiones) {
+    var defer = $q.defer();
+
+    _.each(data, function(d) {
+      d.hide = false;
     })
 
     defer.resolve(data);
@@ -155,19 +161,19 @@ angular.module('tideApp')
     _.each(data, function(d) {
       switch(indicator) {
           case 'MYS':
-              d.visible = similarMYS(target,d) || similarHDI(target,d);
+              d.similar = similarMYS(target,d) || similarHDI(target,d);
               break;
           case 'EYS':
-              d.visible = similarEYS(target,d) || similarHDI(target,d);
+              d.similar = similarEYS(target,d) || similarHDI(target,d);
               break;
           case 'GNI':
-              d.visible = similarGNI(target,d) || similarHDI(target,d);
+              d.similar = similarGNI(target,d) || similarHDI(target,d);
               break;
           case 'LE':
-              d.visible = similarLE(target,d) || similarHDI(target,d);
+              d.similar = similarLE(target,d) || similarHDI(target,d);
               break;
           default:
-              d.visible = similarGNI(target,d) || similarHDI(target,d);
+              d.similar = similarGNI(target,d) || similarHDI(target,d);
       }
 
       // Add similar countries to list (excluding target)

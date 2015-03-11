@@ -3,254 +3,365 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-  <head>
-    <meta charset="utf-8">
-    <title>Human Development - Proximity Visualizer</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="main.css">
-    <!-- endbuild -->
-    <script src="./bower_components/modernizr/modernizr.js"></script>
-  </head>
-  <body ng-app="tideApp">
+<head>
+  <meta charset="utf-8">
+  <title>Human Development Visualizer - Similarity explorer Visualizer</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css({.tmp,app}) styles/main.css -->
+  <link rel="stylesheet" href="main.css">
+  <!-- endbuild -->
+  <script src="./bower_components/modernizr/modernizr.js"></script>
+</head>
+<body ng-app="tideApp">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+      <![endif]-->
 
-  <div id="browser_warning">
-      <h3 class="text-muted">Su navegador no soporta algunas funciones modernas (HTML5 / SVG) que son necesarias para el funcionamiento de este visualizador.  Le sugerimos actualizarl el navegador o probar con uno diferente.</h3>
+      <div id="browser_warning">
+        <h3 class="text-muted">Su navegador no soporta algunas funciones modernas (HTML5 / SVG) que son necesarias para el funcionamiento de este visualizador.  Le sugerimos actualizarl el navegador o probar con uno diferente.</h3>
+      </div>
+
+      <!-- Add your site or application content here -->
+      <!-- container -->
+      <div class="container" ng-controller="AppController as controller">
+        <div class="header">
+          <h1 class="text-muted">Human Development Visualizer <small>Similarity explorer</small></h1>
+        </div>
+
+
+        <div class="row">
+          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+
+            <div class="btn-group-vertical">
+              <label class="indicator btn btn-primary col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'GNI'" style="margin-bottom:4px;white-space: normal;" tooltip="Gross national income per capita (2011 PPP $)" tooltip-append-to-body="true" tooltip-placement="right" ><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>Standard of living</label>
+
+              <label class="indicator btn btn-warning col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'LE'" style="margin-bottom:4px;white-space: normal;" tooltip="Life expectancy at birth (years)" tooltip-append-to-body="true" tooltip-placement="right"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Health</label>
+
+              <label class="indicator btn btn-success col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'MYS'" style="margin-bottom:4px;white-space: normal;" tooltip="Mean years of schooling (years)" tooltip-append-to-body="true" tooltip-placement="right"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Education (mean)</label>
+
+              <label class="indicator btn btn-success col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'EYS'" style="margin-bottom:4px;white-space: normal;" tooltip="Expected years of schooling (years)" tooltip-append-to-body="true" tooltip-placement="right"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Education (expected)</label>
+
+              <hr>
+              <h4 class="text-muted">Countries similar to {{controller.selectedCountry.Country}}</h4>
+              <accordion close-others="false">
+                <accordion-group heading="{{controller.indicatorLabels[controller.selectedIndicator].shortLabel}}"  is-open="controller.isFirstCountryAccordionOpen" ng-class="{'panel-primary':controller.selectedIndicator=='GNI','panel-warning':controller.selectedIndicator=='LE','panel-success':controller.selectedIndicator=='MYS'||controller.selectedIndicator=='EYS'}">
+                  <div ng-repeat="(region, countries) in controller.similarCountries[controller.selectedIndicator]" >
+                    <span>{{region}}: </span>
+              
+                      <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
+                        <img src="http://geotree.geonames.org/img/flags18/{{country.iso2}}.png" tooltip="{{country.Country}}" tooltip-append-to-body="true" tooltip-placement="auto">
+                        <span ng-hide="$last"> </span>
+                      </span>
+     
+                  </div>                
+                </accordion-group>                               
+                <accordion-group heading="HDI">
+                  <div ng-repeat="(region, countries) in controller.similarCountries['HDI']">
+                    <span>{{region}}: </span>
+              
+                      <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
+                        <img src="http://geotree.geonames.org/img/flags18/{{country.iso2}}.png" tooltip="{{country.Country}}" tooltip-append-to-body="true" tooltip-placement="auto">
+                        <span ng-hide="$last"> </span>
+                      </span>
+     
+                  </div>                
+                </accordion-group>
+                <accordion-group heading="HDI Adjusted for inequality">
+                  <div ng-repeat="(region, countries) in controller.similarCountries['IHDI']">
+                    <span>{{region}}: </span>
+              
+                      <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
+                        <img src="http://geotree.geonames.org/img/flags18/{{country.iso2}}.png" tooltip="{{country.Country}}" tooltip-append-to-body="true" tooltip-placement="auto">
+                        <span ng-hide="$last"> </span>
+                      </span>
+     
+                  </div>                
+                </accordion-group>
+              </accordion>
+
+  </div> 
+  <div></div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
   </div>
 
-    <!-- Add your site or application content here -->
-    <!-- container -->
-    <div class="container" ng-controller="AppController as controller">
-      <div class="header">
-        <h1 class="text-muted">Human Development Index (HDI) <small>Similarity explorer</small></h1>
+
+</div>
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+  <div ng-show="controller.loading" class="label label-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading data...</div>
+  <div td-xy-chart class="col-md-12" ng-model="controller.data" td-data="controller.data" td-size-attribute="'population'" td-xattribute="'HDI'" td-yattribute="controller.selectedIndicator" td-tooltip-message="controller.tooltipMessage" td-min-size="5" td-max-size="20" td-color-attribute="'Region'" td-width="400" td-trendline="false" td-color-legend="controller.legend" td-drawing="controller.drawing" td-exclude-zero-x="true" td-id-attribute="'iso3'" td-selected="controller.selectedCountry" td-log-scale-y="controller.selectedIndicator=='GNI'" td-y-limits="controller.limits[controller.selectedIndicator]" td-x-limits="[0,1]" td-data-version="controller.dataVersion" td-highlight-x-band="controller.bands['HDI']" td-highlight-x-alt-band="controller.bands['IHDI']" td-highlight-y-band="controller.bands[controller.selectedIndicator]" td-on-selected="controller.kk" td-activate-alt-x-band="controller.showInequalityBand" td-x-label="'Human Development Index (HDI)'" td-y-label="controller.indicatorAxisLabel[controller.selectedIndicator]" td-year-label="controller.selectedYear">    
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="row cols-middle">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
+        <label class="btn btn-default btn-xs" ng-click="controller.toggleTimePlay()" ng-hide="controller.loading"><span ng-hide="controller.isTimePlaying" class="glyphicon glyphicon-play" aria-hidden="true">Play</span><span ng-show="controller.isTimePlaying" class="glyphicon glyphicon-pause" aria-hidden="true">Pause</span></label>
+      </div><div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+        <slider floor="1980" ceiling="2013" step="1" precision="0" ng-model="controller.selectedYear" ng-change="controller.changeYear()"></slider>
       </div>
+    </div>
 
-      <div ng-show="controller.loading" class="label label-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Cargando datos...</div>
+  </div>
+</div>
+<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+  <input type="text" ng-model="controller.searchedCountry" placeholder="Search country" typeahead-on-select="controller.ontype($item, $model, $label)" typeahead="item as item.Country for item in controller.data | filter:$viewValue | limitTo:20" class="form-control" typeahead-template-url="customTypeAheadTemplate.html">
+  <h4><img src="http://geotree.geonames.org/img/flags18/{{controller.selectedCountry.iso2}}.png" ng-show="controller.selectedCountry"> {{controller.selectedCountry.Country}}</h4>
 
-      <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-     
-          <div class="btn-group-vertical">
-              <label class="indicator btn btn-primary col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'GNI'" style="margin-bottom:4px;white-space: normal;" tooltip="Gross national income per capita (2011 PPP $)" tooltip-append-to-body="true"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>Standard of living</label>
+  <h5 class="text-muted regionselector" ng-click="controller.toggleRegionSelection(controller.selectedCountry.Region)">Geographical region: <span class="text-primary">{{controller.selectedCountry.Region}}</span></h5>
+  <label class="btn btn-default btn-xs" ng-click="controller.toggleRegionSelection(controller.selectedCountry.Region)"><span ng-hide="controller.selectedRegion">Hide other regions</span><span ng-show="controller.selectedRegion">Show all regions</span></label>
+  <br><br>
+  <table class="table table-striped table-hover">
+    <thead>
 
-              <label class="indicator btn btn-warning col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'LE'" style="margin-bottom:4px;white-space: normal;" tooltip="Life expectancy at birth (years)" tooltip-append-to-body="true"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Health</label>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Year</td>
+        <td>{{controller.selectedCountry.year}}</td>
+      </tr>
+      <tr>
+        <td>HDI</td>
+        <td>{{controller.selectedCountry.HDI}}</td>
+      </tr>              
+      <tr>
+        <td>HDI (inequality adjusted)</td>
+        <td>{{controller.selectedCountry.IHDI}}
+          <label type="button" class="btn btn-default btn-xs"  ng-click="controller.showInequalityBand=!controller.showInequalityBand&&(controller.selectedCountry.IHDI>0)" ng-show="controller.selectedCountry.IHDI>0" style="margin-bottom:4px;white-space: normal;"><span ng-hide="controller.showInequalityBand">Show band</span><span ng-show="controller.showInequalityBand">Hide band</span></label>
+        </td>
+      </tr>
+      <tr>
+        <td>Population</td>
+        <td>{{controller.selectedCountry.population | number}}</td>
+      </tr>              
+      <tr>
+        <td>Income (GNI)</td>
+        <td>${{controller.selectedCountry.GNI | number}}</td>
+      </tr>              
+      <tr>
+        <td>Life Expectancy</td>
+        <td>{{controller.selectedCountry.LE | number:1}}</td>
+      </tr>              
+      <tr>
+        <td>Expected Years of Schooling</td>
+        <td>{{controller.selectedCountry.EYS | number:1}}</td>
+      </tr>
+      <tr>
+        <td>Mean Years of Schooling</td>
+        <td>{{controller.selectedCountry.MYS | number:1}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
 
-              <label class="indicator btn btn-success col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'MYS'" style="margin-bottom:4px;white-space: normal;" tooltip="Mean years of schooling (years)" tooltip-append-to-body="true"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Education (mean)</label>
-
-              <label class="indicator btn btn-success col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'EYS'" style="margin-bottom:4px;white-space: normal;" tooltip="Expected years of schooling (years)" tooltip-append-to-body="true"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Education (expected)</label>
-
-          </div> 
-          <div></div>
-          <hr>
-          <label type="button" class="btn btn-primary col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-click="controller.showInequalityBand=!controller.showInequalityBand&&(controller.selectedCountry.IHDI>0)" ng-class="{active:controller.showInequalityBand}" style="margin-bottom:4px;white-space: normal;" tooltip="{{controller.ineqTooltip()}}">Show inequality adjusted HDI band</label>
-          <hr>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          </div>
-
-
-        </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-
-          <div td-xy-chart class="col-md-12" ng-model="controller.data" td-data="controller.data" td-size-attribute="'population'" td-xattribute="'HDI'" td-yattribute="controller.selectedIndicator" td-tooltip-message="controller.tooltipMessage" td-min-size="5" td-max-size="20" td-color-attribute="'Region'" td-width="400" td-trendline="false" td-color-legend="controller.legend" td-drawing="controller.drawing" td-exclude-zero-x="true" td-id-attribute="'iso3'" td-selected="controller.selectedCountry" td-log-scale-y="controller.selectedIndicator=='GNI'" td-y-limits="controller.limits[controller.selectedIndicator]" td-x-limits="[0,1]" td-data-version="controller.dataVersion" td-highlight-x-band="controller.bands['HDI']" td-highlight-x-alt-band="controller.bands['IHDI']" td-highlight-y-band="controller.bands[controller.selectedIndicator]" td-on-selected="controller.kk" td-activate-alt-x-band="controller.showInequalityBand" td-x-label="'Human Development Index (HDI)'" td-y-label="controller.indicatorAxisLabel[controller.selectedIndicator]">    
-            </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <slider floor="1980" ceiling="2013" step="1" precision="0" ng-model="controller.selectedYear" ng-change="controller.changeYear()"></slider>
-          </div>
-        </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-          <input type="text" ng-model="controller.searchedCountry" placeholder="Search country" typeahead-on-select="controller.ontype($item, $model, $label)" typeahead="item as item.Country for item in controller.data | filter:$viewValue | limitTo:20" class="form-control" typeahead-template-url="customTypeAheadTemplate.html">
-          <h4><img src="http://geotree.geonames.org/img/flags18/{{controller.selectedCountry.iso2}}.png"> {{controller.selectedCountry.Country}}</h4>
-          
-          <table class="table table-striped table-hover">
-            <thead>
-
-            </thead>
-            <tbody>
-              <tr>
-                <td>Year</td>
-                <td>{{controller.selectedCountry.year}}</td>
-              </tr>
-              <tr>
-                <td>HDI</td>
-                <td>{{controller.selectedCountry.HDI}}</td>
-              </tr>              
-              <tr>
-                <td>HDI (inequality adjusted)</td>
-                <td>{{controller.selectedCountry.IHDI}}</td>
-              </tr>
-              <tr>
-                <td>Population</td>
-                <td>{{controller.selectedCountry.population | number}}</td>
-              </tr>              
-              <tr>
-                <td>Income (GNI)</td>
-                <td>${{controller.selectedCountry.GNI | number}}</td>
-              </tr>              
-              <tr>
-                <td>Life Expectancy</td>
-                <td>{{controller.selectedCountry.LE | number:1}}</td>
-              </tr>              
-              <tr>
-                <td>Expected Years of Schooling</td>
-                <td>{{controller.selectedCountry.EYS | number:1}}</td>
-              </tr>
-              <tr>
-                <td>Mean Years of Schooling</td>
-                <td>{{controller.selectedCountry.MYS | number:1}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+<h3 class="text-muted" ng-show="false">Countries similar to <strong>{{controller.selectedCountry.Country}}</strong> in Human Development Indicadors</h3>  
+<div class="row" ng-show="false">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Similar Human Development Index</h3>
       </div>
+      <div class="panel-body">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">Region</th>
+              <th class="col-xs-10 col-sm-10 col-md-10 col-lg-10">Countries</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(region, countries) in controller.similarCountries['HDI']">
+              <td>{{region}}</td>
+              <td>              
+                <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
+                  <span class="label label-primary">{{country.Country}}</span>
+                  <span ng-hide="$last"> </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>  
+      </div>
+    </div>
+  </div>
 
-      <h3 class="text-muted">Countries similar to <strong>{{controller.selectedCountry.Country}}</strong> in Human Development Indicadors</h3>  
-      <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              <h3 class="panel-title">Similar Human Development Index</h3>
-            </div>
-            <div class="panel-body">
-              <table class="table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">Region</th>
-                    <th class="col-xs-10 col-sm-10 col-md-10 col-lg-10">Countries</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="(region, countries) in controller.similarCountries['HDI']">
-                    <td>{{region}}</td>
-                    <td>              
-                      <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
-                        <span class="label label-primary">{{country.Country}}</span>
-                        <span ng-hide="$last"> </span>
-                      </span>
-                  </td>
-                  </tr>
-                </tbody>
-              </table>  
-            </div>
-          </div>
-        </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Similar Inequality-adjusted Human Development Index</h3>
+      </div>
+      <div class="panel-body">
+       <div class="well" ng-hide="+controller.selectedCountry.IHDI>0" >There is no inequality data for {{controller.selectedCountry.Country}} this year</div>
+       <table class="table table-striped table-hover" ng-show="+controller.selectedCountry.IHDI>0">
+        <thead>
+          <tr>
+            <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">Region</th>
+            <th class="col-xs-10 col-sm-10 col-md-10 col-lg-10">Countries</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(region, countries) in controller.similarCountries['IHDI']">
+            <td>{{region}}</td>
+            <td>              
+              <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
+                <span class="label" ng-class="{'label-warning':country.inequalityFlag, 'label-primary':!country.inequalityFlag}">{{country.Country}}</span>
+                <span ng-hide="$last"> </span>
+              </span>
+            </td>
+          </tr>
+        </tbody>
 
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              <h3 class="panel-title">Similar Inequality-adjusted Human Development Index</h3>
-            </div>
-            <div class="panel-body">
-             <div class="well" ng-hide="+controller.selectedCountry.IHDI>0" >There is no inequality data for {{controller.selectedCountry.Country}} this year</div>
-              <table class="table table-striped table-hover" ng-show="+controller.selectedCountry.IHDI>0">
-                <thead>
-                  <tr>
-                    <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">Region</th>
-                    <th class="col-xs-10 col-sm-10 col-md-10 col-lg-10">Countries</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="(region, countries) in controller.similarCountries['IHDI']">
-                    <td>{{region}}</td>
-                    <td>              
-                      <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
-                        <span class="label" ng-class="{'label-warning':country.inequalityFlag, 'label-primary':!country.inequalityFlag}">{{country.Country}}</span>
-                        <span ng-hide="$last"> </span>
-                      </span>
-                  </td>
-                  </tr>
-                </tbody>
-                
-              </table>  
-            </div>
-            <div class="panel-footer">
-              Highlighted <span class="label label-warning">Countries</span> are similar only after adjusted for inequality.
-            </div>
-          </div>
-        </div>
+      </table>  
+    </div>
+    <div class="panel-footer">
+      Highlighted <span class="label label-warning">Countries</span> are similar only after adjusted for inequality.
+    </div>
+  </div>
+</div>
 
-        </div>
+</div>
 
-        <div class="row similarity-panel">
+<div class="row similarity-panel" ng-show="false">
 
 
 
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-repeat="indicator in controller.indicators">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              <h3 class="panel-title"><span class="glyphicon {{indicator.icon}}" aria-hidden="true"></span> Similar {{indicator.label}}</h3>
-            </div>
-            <div class="panel-body">
-              <table class="table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">Region</th>
-                    <th class="col-xs-10 col-sm-10 col-md-10 col-lg-10">Countries</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="(region, countries) in controller.similarCountries[indicator.code]">
-                    <td>{{region}}</td>
-                    <td>              
-                      <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
-                        <span class="label label-primary">{{country.Country}}</span>
-                        <span ng-hide="$last"> </span>
-                      </span>
-                  </td>
-                  </tr>
-                </tbody>
-              </table>  
-            </div>
-          </div>
-        </div>
-        
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-repeat="indicator in controller.indicators">
+    <div class="panel" ng-class="{'panel-primary':indicator.code=='GNI', 'panel-warning':indicator.code=='LE', 'panel-success':indicator.code=='MYS'||indicator.code=='EYS'}">
+      <div class="panel-heading" >
+        <h3 class="panel-title"><span class="glyphicon {{indicator.icon}}" aria-hidden="true"></span> Similar {{indicator.label}}</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">Region</th>
+              <th class="col-xs-10 col-sm-10 col-md-10 col-lg-10">Countries</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(region, countries) in controller.similarCountries[indicator.code]">
+              <td>{{region}}</td>
+              <td>              
+                <span ng-repeat="country in countries" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
+                  <span class="label label-primary">{{country.Country}}</span>
+                  <span ng-hide="$last"> </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>  
+      </div>
+    </div>
+  </div>
 
 
- 
+
+
+
   
-      </div>
+</div>
+<div class="row">
+  <h4>Notes</h4>
+  <dl class="">
+    <dt>Similarity criteria for HDI</dt>
+    <dd>We use a similarity "bandwith" of 0.05 in the respective index.  If a country has an index X, we consider other counries to be similar to it if they have an index betwen X-0.025 an X+0.025. <br>
+      For example, we consider a country with an HDI between 0.443 an 0.493 to be similar in HDI to Afganistan (which has an HDI of 0.468).<br>
+    </dd>
+  </dl>               
+  <dl class="">
+    <dt>Similarity criteria for IHDI (HDI adjusted for inequality)</dt>
+    <dd>Countries are considered similar, when adjusted for inequlaity, if they have an IHDI which differs in +/- 0.025.<br>
+      Counries with no IHDI data are not considered for similarity in IHDI.
+    </dd>
+  </dl>          
+  <dl class="">
+    <dt>Similarity criteria for Income, Life Expectancy and Education</dt>
+    <dd>For raw indicators (Income, Life Expectancy and Education), we calculate the respective index using indications from <a href="http://hdr.undp.org/sites/default/files/hdr14_technical_notes.pdf" target="_blank">Human Development Report Technical Notes 2014</a>, and determine similarity using the same criteria used for HDI: index +/- 0.025.
+    </dd>
+  </dl>
+  <dt>Log Scale for Gross national income per capita</dt>
+  <dd>The chart uses a logarithmic scale for Gross national income per capita, which is consistent with the way the Income Index is calculated according to <a href="http://hdr.undp.org/sites/default/files/hdr14_technical_notes.pdf" target="_blank">Human Development Report Technical Notes 2014</a> 
+  </dd>
+</dl>
 
 
 
+<h4>Data sources</h4>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Source</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://hdr.undp.org/sites/default/files/hdi_series_cartagena.xlsx" target="_blank">Human Development Index and its components</a></td>
+      <td>http://hdr.undp.org/sites/default/files/hdi_series_cartagena.xlsx</td>
+    </tr>
+    <tr>
+      <td><a href="http://hdr.undp.org/sites/default/files/ihdi_series_cartagena.xlsx" target="_blank">Inequality-adjusted Human Development Index and its components</a></td>
+      <td>http://hdr.undp.org/sites/default/files/ihdi_series_cartagena.xlsx</td>
+    </tr>
+    <tr>
+      <td><a href="http://databank.worldbank.org/data/views/reports/tableview.aspx" target="_blank">Population by Country/Year</a></td>
+      <td>http://databank.worldbank.org/data/views/reports/tableview.aspx</td>
+    </tr>
+    <tr>
+      <td><a href="http://geotree.geonames.org" target="_blank">Country flags</a></td>
+      <td>http://geotree.geonames.org<br> Example: http://geotree.geonames.org/img/flags18/AF.png</td>
+    </tr>              
+    <tr>
+      <td><a href="http://hdr.undp.org/sites/default/files/hdr14_technical_notes.pdf" target="_blank">Calculation of indexes</a></td>
+      <td>http://hdr.undp.org/sites/default/files/hdr14_technical_notes.pdf</td>
+    </tr>              
+    <tr>
+      <td><a href="http://unstats.un.org/unsd/methods/m49/m49regin.htm" target="_blank">Definition of geographical regions</a></td>
+      <td>http://unstats.un.org/unsd/methods/m49/m49regin.htm</td>
+    </tr>
 
-      <div class="footer">
 
-        <p>Prototype for Human Development Indicator.</p>
+  </tbody>
+</table>
 
-        <p>Developed by <a href="http://www.tide.cl" target="_blank">TIDE SA</a>, Chile</p>
-      </div>
-
+</div>
 
 
-    </div><!-- container -->
 
-    <script type="text/ng-template" id="customTypeAheadTemplate.html">
-      <a>
-          <img ng-src="http://geotree.geonames.org/img/flags18/{{match.model.iso2}}.png" width="16">
-          <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
-      </a>
-    </script>
+<div class="footer">
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script>
-        var protocol = window.location.protocol == "file:"?"http:":"";
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script',protocol+'//www.google-analytics.com/analytics.js','ga');
+  <p>Visualizing Human Development - Similarity explorer.</p>
 
-       ga('create', 'UA-57309660-1');
-       ga('send', 'pageview');
-    </script>
+  <p>Developed by <a href="http://www.tide.cl" target="_blank">TIDE SA</a>, Chile</p>
+</div>
+
+
+
+</div><!-- container -->
+
+<script type="text/ng-template" id="customTypeAheadTemplate.html">
+  <a>
+    <img ng-src="http://geotree.geonames.org/img/flags18/{{match.model.iso2}}.png" width="16">
+    <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+  </a>
+</script>
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+  var protocol = window.location.protocol == "file:"?"http:":"";
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script',protocol+'//www.google-analytics.com/analytics.js','ga');
+
+ ga('create', 'UA-57309660-1');
+ ga('send', 'pageview');
+</script>
 
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -263,20 +374,22 @@
     <script src="./bower_components/angular/angular.js"></script>
     <script src="./bower_components/angular-touch/angular-touch.min.js"></script>
     <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
-     <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="./bower_components/d3/d3.js"></script>
     <script src="./bower_components/underscore/underscore.js"></script>
     <script src="./bower_components/tide-angular/tide-angular.js"></script>    
     <script src="./bower_components/venturocket-angular-slider/build/angular-slider.min.js"></script>     
 
+    <script src="./bower_components/d3-tip/index.js"></script>     
+
 
     <!-- endbower -->
     <!-- endbuild -->
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="app.js"></script>
-        <script src="controller.js"></script>
-        <script src="service.js"></script>
-        <script src="tide-angular-xy.js"></script>
-        <!-- endbuild -->
-</body>
-</html>
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="app.js"></script>
+    <script src="controller.js"></script>
+    <script src="service.js"></script>
+    <script src="tide-angular-xy.js"></script>
+    <!-- endbuild -->
+  </body>
+  </html>

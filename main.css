@@ -21,6 +21,15 @@
   white-space: normal;
 }
 
+.regionselector {
+  cursor: pointer;
+  white-space: normal;
+}
+
+.regionselector.active {
+  color: red;
+}
+
 .node rect {
   cursor: move;
   fill-opacity: .9;
@@ -278,4 +287,57 @@ slider span.bubble.limit {
   border-width: medium;
   border-color: #0F0F0F;
 }
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+[class*='cols-'].row > *{
+  float: none;
+  position: relative;
+  display: inline-block; 
+  /* old ie fixes */
+  *zoom: 1; 
+  *display: inline;
+}
+
+.row.cols-bottom > *{
+  vertical-align: bottom;
+}
+
+.row.cols-middle > *{
+  vertical-align: middle;
+}
+
+.row.align-middle > [class*="col-"] {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+
 

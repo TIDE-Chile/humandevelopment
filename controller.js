@@ -33,6 +33,10 @@ angular.module('tideApp')
     this.enableInequalityButton = true;
     this.showInequalityBand = false;
     this.targetCountry = "AFG";
+    this.focusRegion=null;
+    this.minYear = 1980;
+    this.maxYear = 2013;
+    this.isFirstCountryAccordionOpen = true;
 
     this.dataVersion=0;
 
@@ -56,6 +60,13 @@ angular.module('tideApp')
         "LE": "Life expectancy at birth (years)",
         "MYS": "Mean years of schooling (years)",
         "EYS": "Expected years of schooling (years)"
+    };
+
+    this.indicatorLabels={
+        "GNI": {'shortLabel':"Standard of living"},
+        "LE": {'shortLabel':"Health"},
+        "MYS": {'shortLabel':"Education (mean)"},
+        "EYS": {'shortLabel':"Education (expected)"}
     };
 
 
@@ -85,6 +96,27 @@ angular.module('tideApp')
         return msg;
     }
 
+
+    this.toggleTimePlay = function() {
+        myself.isTimePlaying = !myself.isTimePlaying;
+        if (myself.isTimePlaying) {
+            myself.selectedYear = myself.selectedYear < myself.maxYear ? myself.selectedYear : myself.minYear;
+            myself.autoIncreaseYear();
+        }
+    }
+
+    this.autoIncreaseYear = function() {
+        if (myself.selectedYear < myself.maxYear && myself.isTimePlaying) {
+            myself.load();
+            myself.selectedYear = myself.selectedYear+1;
+            if (myself.isTimePlaying) {
+                $timeout(myself.autoIncreaseYear, 1000)
+            }
+        } else {
+            myself.isTimePlaying=false;
+        }
+    }
+
     this.kk = function() {
         myself.targetCountry = myself.selectedCountry.iso3;
         myself.load();
@@ -98,13 +130,6 @@ angular.module('tideApp')
         myself.load();
     }
 
-    this.selectRegion = function() {
-        dataService.selectRegion(myself.data, myself.selectedRegion)
-        .then(function(data) {
-            myself.data = data;
-            myself.dataVersion += 1;
-        })
-    }
 
     this.changeTarget = function() {
         if (myself.targetCountry.length == 3) {
@@ -113,6 +138,11 @@ angular.module('tideApp')
     }
 
     this.changeYear = function() {
+        myself.load();
+    }
+
+    this.toggleRegionSelection = function(region) {
+        myself.selectedRegion = myself.selectedRegion ? null : region;
         myself.load();
     }
 
@@ -145,23 +175,31 @@ angular.module('tideApp')
     this.load = function() {
         dataService.getDataHDIYear(myself.selectedYear)
         .then(function(data) {
-            return dataService.similarTo(data, myself.targetCountry, myself.selectedIndicator);
+            return dataService.similarTo(data, myself.targetCountry, myself.selectedIndicator)
         }).then(function(result) {
             console.log("loaded")
             myself.selectedCountry = result.target;
+            myself.selectedRegion = myself.selectedRegion ? myself.selectedCountry.Region : null;
             myself.bands = result.bands;
             myself.data = result.data;
 
+
+
+
+            myself.similarCountries = result.similarCountries;
+            myself.showInequalityBand = +myself.selectedCountry.IHDI > 0 ? myself.showInequalityBand : false;  
+            return dataService.focusRegion(result.data, myself.selectedRegion)
+        }).then(function(data) {
+            myself.data = data;
+            
             // For some reason the typeahead delays update of data on the directive
             // This is a trick to force update
             $scope.$apply(function() {
                myself.dataVersion += 1; 
             })
-
-            myself.similarCountries = result.similarCountries;
-            myself.showInequalityBand = +myself.selectedCountry.IHDI > 0 ? myself.showInequalityBand : false;
-    
         })
+
+
         
     }
 
