@@ -84,7 +84,7 @@
                     <span>{{region}}: </span>
               
                       <span ng-repeat="country in countries | orderBy:controller.getDistance" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
-                        <img src="http://geotree.geonames.org/img/flags18/{{country.iso2}}.png" tooltip="{{country.Country}}" tooltip-append-to-body="true" tooltip-placement="auto">
+                        <img src="http://geotree.geonames.org/img/flags18/{{country.iso2}}.png" tooltip-html-unsafe="{{controller.tooltipBriefMessage(country, controller.selectedIndicator)}}" tooltip-append-to-body="true" tooltip-placement="auto">
                         <span ng-hide="$last"> </span>
                       </span>
      
@@ -95,7 +95,7 @@
                     <span>{{region}}: </span>
               
                       <span ng-repeat="country in countries|orderBy:controller.getDistance" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
-                        <img src="http://geotree.geonames.org/img/flags18/{{country.iso2}}.png" tooltip="{{country.Country}}" tooltip-append-to-body="true" tooltip-placement="auto">
+                        <img src="http://geotree.geonames.org/img/flags18/{{country.iso2}}.png" tooltip-html-unsafe="{{controller.tooltipBriefMessage(country, 'HDI')}}" tooltip-append-to-body="true" tooltip-placement="auto">
                         <span ng-hide="$last"> </span>
                       </span>
      
@@ -106,7 +106,7 @@
                     <span>{{region}}: </span>
               
                       <span ng-repeat="country in countries|orderBy:controller.getDistance" ng-click="controller.targetCountry=country.iso3; controller.changeCountry();" class="similar country">
-                        <img src="http://geotree.geonames.org/img/flags18/{{country.iso2}}.png" tooltip="{{country.Country}}" tooltip-append-to-body="true" tooltip-placement="auto">
+                        <img src="http://geotree.geonames.org/img/flags18/{{country.iso2}}.png" tooltip-html-unsafe="{{controller.tooltipBriefMessage(country, 'IHDI')}}" tooltip-append-to-body="true" tooltip-placement="auto">
                         <span ng-hide="$last"> </span>
                       </span>
                   </div>
@@ -123,12 +123,12 @@
 </div>
 <div class="col-xs-12 col-sm-9 col-md-8 col-lg-8">
   <div ng-show="controller.loading" class="label label-danger"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading data...</div>
-  <div td-xy-chart class="col-md-12" ng-model="controller.data" td-data="controller.data" td-size-attribute="'population'" td-xattribute="'HDI'" td-yattribute="controller.selectedIndicator" td-tooltip-message="controller.tooltipMessage" td-min-size="5" td-max-size="20" td-color-attribute="'Region'" td-width="400" td-trendline="false" td-color-legend="controller.legend" td-drawing="controller.drawing" td-exclude-zero-x="true" td-id-attribute="'iso3'" td-selected="controller.selectedCountry" td-log-scale-y="controller.selectedIndicator=='GNI'" td-y-limits="controller.limits[controller.selectedIndicator]" td-x-limits="[0,1]" td-data-version="controller.dataVersion" td-highlight-x-band="controller.bands['HDI']" td-highlight-x-alt-band="controller.bands['IHDI']" td-highlight-y-band="controller.bands[controller.selectedIndicator]" td-on-selected="controller.kk" td-activate-alt-x-band="controller.showInequalityBand" td-x-label="'Human Development Index (HDI)'" td-y-label="controller.indicatorAxisLabel[controller.selectedIndicator]" td-year-label="controller.selectedYear">    
+  <div td-xy-chart class="col-md-12" ng-model="controller.data" td-data="controller.data" td-size-attribute="'population'" td-xattribute="'HDI'" td-yattribute="controller.selectedIndicator" td-tooltip-message="controller.tooltipMessage" td-min-size="5" td-max-size="20" td-color-attribute="'Region'" td-width="400" td-trendline="false" td-color-legend="controller.legend" td-drawing="controller.drawing" td-exclude-zero-x="true" td-id-attribute="'iso3'" td-selected="controller.selectedCountry" td-log-scale-y="controller.selectedIndicator=='GNI'" td-y-limits="controller.limits[controller.selectedIndicator]" td-x-limits="[0.18,1]" td-data-version="controller.dataVersion" td-highlight-x-band="controller.bands['HDI']" td-highlight-x-alt-band="controller.bands['IHDI']" td-highlight-y-band="controller.bands[controller.selectedIndicator]" td-on-selected="controller.kk" td-activate-alt-x-band="controller.showInequalityBand" td-x-label="'Human Development Index (HDI)'" td-y-label="controller.indicatorAxisLabel[controller.selectedIndicator]" td-year-label="controller.selectedYear">    
   </div>
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-hide="controller.loading">
     <div class="row cols-middle">
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
-        <label class="btn btn-default btn-xs" ng-click="controller.toggleTimePlay()" ng-hide="controller.loading"><span ng-hide="controller.isTimePlaying" class="glyphicon glyphicon-play" aria-hidden="true">Play</span><span ng-show="controller.isTimePlaying" class="glyphicon glyphicon-pause" aria-hidden="true">Pause</span></label>
+        <label class="btn btn-default btn-xs" ng-click="controller.toggleTimePlay()"><span ng-hide="controller.isTimePlaying" class="glyphicon glyphicon-play" aria-hidden="true">Play</span><span ng-show="controller.isTimePlaying" class="glyphicon glyphicon-pause" aria-hidden="true">Pause</span></label>
       </div><div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
         <slider floor="1980" ceiling="2013" step="1" precision="0" ng-model="controller.selectedYear" ng-change="controller.changeYear()"></slider>
       </div>
@@ -153,11 +153,11 @@
         <td>{{controller.selectedCountry.year}}</td>
       </tr>
       <tr>
-        <td>HDI</td>
+        <td><abbr title="The HDI represents a national average of human development achievements in the three basic dimensions making up the HDI: health, education and income.">HDI</abbr></td>
         <td>{{controller.selectedCountry.HDI}}</td>
       </tr>              
       <tr>
-        <td>HDI (inequality adjusted)
+        <td><abbr title="The IHDI takes into account not only the average achievements of a country on health, education and income, but also how those achievements are distributed among its citizens by “discounting” each dimension’s average value according to its level of inequality.">IHDI</abbr> (Inequality adjusted)
                   <label type="button" class="btn btn-primary btn-xs"  ng-click="controller.showInequalityBand=!controller.showInequalityBand&&(controller.selectedCountry.IHDI>0)" ng-show="controller.selectedCountry.IHDI>0" style="margin-bottom:4px;white-space: normal;"><span ng-hide="controller.showInequalityBand">Show band</span><span ng-show="controller.showInequalityBand">Hide band</span></label></td>
         <td>{{controller.selectedCountry.IHDI}}
         </td>

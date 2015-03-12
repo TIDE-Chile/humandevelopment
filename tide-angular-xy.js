@@ -168,26 +168,31 @@ angular.module("tide-angular")
         .append("text")
         .attr("class", "label")
         .attr("transform", "rotate(-90)")
-        .attr("y", -margin.left)
+        .attr("y", -(margin.left-5))
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text(yLabel);
 
         /* Initialize tooltip */
-        var tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return d; });
+        var flagTooltip = d3.tip().attr('class', 'd3-tip').html(scope.tooltipMessage);
+
+        flagTooltip.direction(function(d) {
+          if(d.y > 100) return 'n'
+          else return 's'
+        })
 
         /* Invoke the tip in the context of your visualization */
-        svgContainer.call(tip)
+        svgContainer.call(flagTooltip)
 
 
         var highLightBands = svgContainer.append("g");
         highLightBands.append("rect")
           .attr("class", "highlightBand x")
-          .on('mouseover', tip.show)
-          .on('mouseout', tip.hide)        
+      
 
         highLightBands.append("rect")
           .attr("class", "highlightBand y")
+
 
         highLightBands.append("rect")
           .attr("class", "highlightBand alt x");
@@ -198,6 +203,7 @@ angular.module("tide-angular")
           .attr("font-family", "sans-serif")
           .attr("font-size", 50)
           .attr("fill", "#DDD")
+
 
 
 
@@ -359,13 +365,25 @@ angular.module("tide-angular")
                   });
                 }
 
-              })              
+              }) 
+              .on("mouseover", function(d) {
+                if (d.hide != true) {
+                    flagTooltip.show(d);
+                  } 
+              })                  
+              .on("mouseout", function(d) {
+                  if (d.hide != true) {
+                    flagTooltip.hide(d);
+                  } 
+                    
+              });     
+              /*        
               .on("mouseenter", function(d) {
                 dataPointTooltip.show(d);
               })
               .on("mouseleave", function() {
                 dataPointTooltip.hide();
-              });
+              });*/
 
             newflags
               .append("image")
@@ -424,12 +442,7 @@ angular.module("tide-angular")
               scope.$apply();
             })   
 
-            flags
-            .on("mouseenter", function(d) {
-              if (d.hide != true) {
-                dataPointTooltip.show(d);
-              } 
-            })
+
 
 
             flags.selectAll("rect")

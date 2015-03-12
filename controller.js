@@ -93,10 +93,47 @@ angular.module('tideApp')
     }
     
     this.tooltipMessage = function(d) {
-        var number = d3.format(",")
+        var numberNoDecimal = d3.format(",.0f")
+        var numberOneDecimal = d3.format(",.1f")
+        var number3Decimal = d3.format(",.3f")
         var percentage = d3.format(".1%")
 
         var msg = "<h4>"+d.Country+"</h4>";
+        msg += "Income: $"+numberNoDecimal(d.GNI)+"<br>";
+        msg += "Life expectancy: "+numberOneDecimal(d.LE)+" years<br>";
+        msg += "Mean years of schooling: "+numberOneDecimal(d.MYS)+" years<br>";
+        msg += "Expected years of schooling: "+numberOneDecimal(d.EYS)+" years<br>";
+        return msg;
+    }
+
+    this.tooltipBriefMessage = function(d, indicator) {
+        var numberNoDecimal = d3.format(",.0f")
+        var numberOneDecimal = d3.format(",.1f")
+        var number3Decimal = d3.format(",.3f")
+        var percentage = d3.format(".1%")
+
+        var msg = "<h4>"+d.Country+"</h4>";
+        switch(indicator) {
+            case 'GNI':
+                msg += "Income: $"+numberNoDecimal(d.GNI)+"<br>";
+                break;
+            case 'LE':
+                msg += "Life expectancy: "+numberOneDecimal(d.LE)+" years<br>";
+                break;
+            case 'MYS':
+                msg += "Mean years of schooling: "+numberOneDecimal(d.MYS)+" years<br>";
+                break;
+            case 'HDI':
+                msg += "HDI: "+number3Decimal(d.HDI)+"<br>";
+                break;
+            case 'IHDI':
+                msg += "IHDI: "+number3Decimal(d.IHDI)+"<br>";
+                break;
+            default:
+                msg += "Expected years of schooling: "+numberOneDecimal(d.EYS)+" years<br>";
+        }
+        
+        
         return msg;
     }
 
