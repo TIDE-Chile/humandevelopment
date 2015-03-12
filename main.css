@@ -1,3 +1,9 @@
+/* Space out content a bit */
+body {
+  padding-top: 70px;
+  padding-bottom: 20px;
+}
+
 .axis path,.axis line {fill: none;stroke: #000;shape-rendering: crispEdges;}
 
 .inlinesvg #browser_warning {display: none;}
@@ -48,11 +54,7 @@
   stroke-opacity: .5;
 }
 
-/* Space out content a bit */
-body {
-  padding-top: 0px;
-  padding-bottom: 20px;
-}
+
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
@@ -341,3 +343,89 @@ slider span.bubble.limit {
 }
 
 
+/* Indicator colors */
+.btn-income {
+  color: #fff;
+  background-color: #4169E1;
+  border-color: #337ab7;
+}
+
+.panel-income {
+  border-color: #337ab7;
+}
+
+.panel-income > .panel-heading {
+  color: #fff;
+  background-color: #4169E1;
+  border-color: #337ab7;
+}
+
+.panel-income > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #337ab7;
+}
+.panel-income > .panel-heading .badge {
+  color: #4169E1;
+  background-color: #8a6d3b;
+}
+.panel-income > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #337ab7;
+}
+
+.btn-health {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+.panel-health {
+  border-color: #d43f3a;
+}
+
+.panel-health > .panel-heading {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+.panel-health > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #d43f3a;
+}
+.panel-health > .panel-heading .badge {
+  color: #d9534f;
+  background-color: #8a6d3b;
+}
+.panel-health > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #d43f3a;
+}
+
+.btn-education {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+
+.panel-education {
+  border-color: #4cae4c;
+}
+
+.panel-education > .panel-heading {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+
+.panel-education > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #4cae4c;
+}
+.panel-education > .panel-heading .badge {
+  color: #5cb85c;
+  background-color: #8a6d3b;
+}
+.panel-education > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #4cae4c;
+}
+
+.label-country {
+  background-color: #855CAD;
+}
+}

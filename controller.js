@@ -83,6 +83,10 @@ angular.module('tideApp')
         "EYS": [0, 20]
     }
 
+    this.getDistance=function(d) {
+        return d['dist'+myself.selectedIndicator]
+    }
+
     this.onSelected = function(d) {
         myself.targetCountry = d.iso3;
         myself.load();
@@ -100,15 +104,15 @@ angular.module('tideApp')
     this.toggleTimePlay = function() {
         myself.isTimePlaying = !myself.isTimePlaying;
         if (myself.isTimePlaying) {
-            myself.selectedYear = myself.selectedYear < myself.maxYear ? myself.selectedYear : myself.minYear;
+            myself.selectedYear = myself.selectedYear < myself.maxYear ? myself.selectedYear : myself.minYear-1;
             myself.autoIncreaseYear();
         }
     }
 
     this.autoIncreaseYear = function() {
         if (myself.selectedYear < myself.maxYear && myself.isTimePlaying) {
-            myself.load();
             myself.selectedYear = myself.selectedYear+1;
+            myself.load();
             if (myself.isTimePlaying) {
                 $timeout(myself.autoIncreaseYear, 1000)
             }

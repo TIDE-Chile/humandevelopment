@@ -90,8 +90,9 @@ angular.module("tide-angular")
       },
       
       link: function (scope, element, attrs, ngModel) {
+        var heightWidthRatio = 0.75;
         var width = scope.width ? scope.width : 300;
-        var height = scope.width ? scope.width*0.8 : 300;
+        var height = scope.width ? scope.width*heightWidthRatio : 300;
         var margin = {};
         margin.left = scope.options && scope.options.margin && scope.options.margin.left ? scope.options.margin.left : 100;
         margin.right = 20;
@@ -208,7 +209,7 @@ angular.module("tide-angular")
 
         var resizeSvg = function() {
           width = element.width()-margin.left-margin.right;
-          height = width*0.8//-margin.top-margin.bottom;
+          height = width*heightWidthRatio//-margin.top-margin.bottom;
           svgMainContainer.attr("width",element.width())
           svgMainContainer.attr("height",height+margin.top+margin.bottom)
         }
@@ -277,10 +278,13 @@ angular.module("tide-angular")
 
             var xFormat = xDomainRange/xNumberOfTicks > 1 ? d3.format("d") : d3.format(".1f");
             var yFormat = yDomainRange/yNumberOfTicks > 1 ? d3.format("d") : d3.format(".1f");
+            var commasFormatter = d3.format(",.0f")
 
+//axis.tickFormat(d3.format(",.0f")) will display integers with comma-grouping for thousands. Defining the formatter first: var commasFormatter = d3.format(",.0f") lets you to call it as a function of your data, for example, to add currency units in front of the comma-grouped integers: .tickFormat(function(d) { return "$" + commasFormatter(d); }).
+  
             var logFormat = function(d) {
               var y = Math.log(d) / Math.log(10) + 1e-6;
-              return Math.abs(y - Math.floor(y)) < .7 ? yFormat(d) : "";
+              return Math.abs(y - Math.floor(y)) < .7 ? "$"+commasFormatter(d) : "";
             }
 
             var xAxis = d3.svg.axis().scale(layout.xScale()).ticks(xNumberOfTicks).tickFormat(xFormat).tickSubdivide(0);

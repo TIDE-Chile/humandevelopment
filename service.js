@@ -200,23 +200,33 @@ angular.module('tideApp')
         }
       } 
 
-/*
-      && (similarHDI(target,d) || countriesSimilarIHDIb.push(d))) {
-        d.noineq = similarHDI(target,d);
-        d.ineq = similarIHDIb(target,d);
-        countriesSimilarHDI.push(d);
-      }
-      if (similarIHDI(target,d)) {
-        countriesSimilarIHDI.push(d);
-      }
-      if (similarIHDIb(target,d)) {
-        countriesSimilarIHDIb.push(d);
-      }
-      */
-
     })
 
     var bands = similarityBands(target);
+
+    _.each(similarCountries['HDI'], function(d) {
+      d['distHDI']= Math.abs(d.HDI-target.HDI);
+    })
+
+    _.each(similarCountries['IHDI'], function(d) {
+      d['distIHDI']= Math.abs(d.IHDI-target.IHDI);
+    })
+
+    _.each(similarCountries['GNI'], function(d) {
+      d['distGNI']= Math.abs(idxgni(d.GNI) - idxgni(target.GNI));
+    })
+
+    _.each(similarCountries['LE'], function(d) {
+      d['distLE']= Math.abs(idxle(d.LE) - idxle(target.LE));
+    })
+
+    _.each(similarCountries['MYS'], function(d) {
+      d['distMYS']= Math.abs(idxmys(d.MYS) - idxmys(target.MYS));
+    })
+
+    _.each(similarCountries['EYS'], function(d) {
+      d['distEYS']= Math.abs(idxeys(d.EYS) - idxeys(target.EYS));
+    })
 
     similarCountries['HDI'] = _.groupBy(similarCountries['HDI'], function(d) {return d.Region});
     similarCountries['IHDI'] = _.groupBy(similarCountries['IHDI'], function(d) {return d.Region});
@@ -231,12 +241,6 @@ angular.module('tideApp')
       "bands":bands, 
       "target": target,
       "similarCountries":similarCountries
-      /*
-      "similarHDI":_.groupBy(countriesSimilarHDI, function(d) {return d.Region}), 
-      "similarIHDI":_.groupBy(countriesSimilarIHDI, function(d) {return d.Region}), 
-      "similarIHDIb":_.groupBy(countriesSimilarIHDIb, function(d) {return d.Region}), 
-      "similarIndicator": _.groupBy(countriesSimilarIndicator, function(d) {return d.Region})
-      */
     });
 
     return defer.promise;
