@@ -26,7 +26,7 @@
  *
  */
 angular.module('tideApp')
-.controller('AppController', ['$scope','$http','_','d3', 'DataService', "$timeout",function ($scope,$http,_,d3, dataService, $timeout) {
+.controller('AppController', ['$scope','$http','_','d3', 'DataService', "$timeout", "$analytics",function ($scope,$http,_,d3, dataService, $timeout, $analytics) {
 	var myself = this;
     this.loading = false;
     this.data = null;
@@ -87,10 +87,13 @@ angular.module('tideApp')
         return d['dist'+myself.selectedIndicator]
     }
 
+    /*
     this.onSelected = function(d) {
+        $analytics.eventTrack('select', {  category: 'country', label: d.iso3 });
         myself.targetCountry = d.iso3;
         myself.load();
     }
+    */
     
     this.tooltipMessage = function(d) {
         var numberNoDecimal = d3.format(",.0f")
@@ -140,6 +143,7 @@ angular.module('tideApp')
 
     this.toggleTimePlay = function() {
         myself.isTimePlaying = !myself.isTimePlaying;
+        $analytics.eventTrack('timeline', {  category: 'play', label: myself.isTimePlaying });
         if (myself.isTimePlaying) {
             myself.selectedYear = myself.selectedYear < myself.maxYear ? myself.selectedYear : myself.minYear-1;
             myself.autoIncreaseYear();
@@ -158,8 +162,9 @@ angular.module('tideApp')
         }
     }
 
-    this.kk = function() {
+    this.clickedCountry = function() {
         myself.targetCountry = myself.selectedCountry.iso3;
+        $analytics.eventTrack('select', {  category: 'country', label: myself.selectedCountry.Country });
         myself.load();
     }
 
@@ -168,28 +173,33 @@ angular.module('tideApp')
     }
 
     this.changeCountry = function() {
+        $analytics.eventTrack('select', {  category: 'country', label: myself.selectedCountry.Country });
         myself.load();
     }
 
-
+    /*
     this.changeTarget = function() {
         if (myself.targetCountry.length == 3) {
             myself.load();
         }
     }
+    */
 
     this.changeYear = function() {
+        $analytics.eventTrack('select', {  category: 'year', label: myself.selectedYear });
         myself.load();
     }
 
     this.toggleRegionSelection = function(region) {
         myself.selectedRegion = myself.selectedRegion ? null : region;
+        $analytics.eventTrack('toggle', {  category: 'region', label: myself.selectedRegion });
         myself.load();
     }
 
     this.ontype = function(item,model,label) {
         if (item && item.iso3) {
             myself.targetCountry=item.iso3;
+            $analytics.eventTrack('search', {  category: 'country', label: item.Country });
             myself.searchedCountry=null
             myself.load();   
         }
@@ -223,15 +233,12 @@ angular.module('tideApp')
             myself.selectedRegion = myself.selectedRegion ? myself.selectedCountry.Region : null;
             myself.bands = result.bands;
             myself.data = result.data;
-
-
-
-
             myself.similarCountries = result.similarCountries;
             myself.showInequalityBand = +myself.selectedCountry.IHDI > 0 ? myself.showInequalityBand : false;  
             return dataService.focusRegion(result.data, myself.selectedRegion)
         }).then(function(data) {
             myself.data = data;
+            myself.loading=false;
             
             // For some reason the typeahead delays update of data on the directive
             // This is a trick to force update
@@ -243,7 +250,7 @@ angular.module('tideApp')
 
         
     }
-
+    this.loading=true;
     this.load();
 
 }]);

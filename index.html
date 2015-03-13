@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Human Development Visualizer - Similarity explorer Visualizer</title>
+  <title>Human Development Visualizer - Similarity explorer</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -18,6 +18,9 @@
   <link rel="stylesheet" href="main.css">
   <!-- endbuild -->
   <script src="./bower_components/modernizr/modernizr.js"></script>
+  <script src="./bower_components/jquery/dist/jquery.js"></script>
+  <script src="./bower_components/angular/angular.js"></script>
+
 </head>
 <body ng-app="tideApp" ng-controller="AppController as controller">
     <!--[if lt IE 7]>
@@ -62,16 +65,16 @@
         -->
 
         <div class="row">
-          <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+          <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2" ng-cloak>
 
             <div class="btn-group-vertical">
-              <label class="indicator btn btn-income col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left" ng-model="controller.selectedIndicator" btn-radio="'GNI'" style="margin-bottom:4px;white-space: normal;text-align: left;" tooltip="Gross national income per capita (2011 PPP $)" tooltip-append-to-body="true" tooltip-placement="right" ><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>Standard of living</label>
+              <label class="indicator btn btn-income col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left" ng-model="controller.selectedIndicator" btn-radio="'GNI'" style="margin-bottom:4px;white-space: normal;text-align: left;" tooltip="Gross national income per capita (2011 PPP $)" tooltip-append-to-body="true" tooltip-placement="right" analytics-on="click" analytics-event="select" analytics-category="indicator" analytics-label="GNI"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>Standard of living</label>
 
-              <label class="indicator btn btn-health col-xs-12 col-sm-12 col-md-12 col-lg-12 " ng-model="controller.selectedIndicator" btn-radio="'LE'" style="margin-bottom:4px;white-space: normal; text-align: left;" tooltip="Life expectancy at birth (years)" tooltip-append-to-body="true" tooltip-placement="right"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Health</label>
+              <label class="indicator btn btn-health col-xs-12 col-sm-12 col-md-12 col-lg-12 " ng-model="controller.selectedIndicator" btn-radio="'LE'" style="margin-bottom:4px;white-space: normal; text-align: left;" tooltip="Life expectancy at birth (years)" tooltip-append-to-body="true" tooltip-placement="right" analytics-on="click" analytics-event="select" analytics-category="indicator" analytics-label="LE"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Health</label>
 
-              <label class="indicator btn btn-education col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'MYS'" style="margin-bottom:4px;white-space: normal;text-align: left;" tooltip="Mean years of schooling (years)" tooltip-append-to-body="true" tooltip-placement="right"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Education <span class="small">(mean)</span></label>
+              <label class="indicator btn btn-education col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'MYS'" style="margin-bottom:4px;white-space: normal;text-align: left;" tooltip="Mean years of schooling (years)" tooltip-append-to-body="true" tooltip-placement="right" analytics-on="click" analytics-event="select" analytics-category="indicator" analytics-label="MYS"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Education <span class="small">(mean)</span></label>
 
-              <label class="indicator btn btn-education col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'EYS'" style="margin-bottom:4px;white-space: normal;text-align: left;" tooltip="Expected years of schooling (years)" tooltip-append-to-body="true" tooltip-placement="right"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Education <span class="small">(expected)<span></label>
+              <label class="indicator btn btn-education col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-model="controller.selectedIndicator" btn-radio="'EYS'" style="margin-bottom:4px;white-space: normal;text-align: left;" tooltip="Expected years of schooling (years)" tooltip-append-to-body="true" tooltip-placement="right" analytics-on="click" analytics-event="select" analytics-category="indicator" analytics-label="EYS"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Education <span class="small">(expected)<span></label>
 
               <hr>
               <h4 class="text-muted">Countries similar to {{controller.selectedCountry.Country}}</h4>
@@ -122,10 +125,11 @@
 
 </div>
 <div class="col-xs-12 col-sm-9 col-md-8 col-lg-8">
-  <div ng-show="controller.loading" class="label label-danger"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading data...</div>
-  <div td-xy-chart class="col-md-12" ng-model="controller.data" td-data="controller.data" td-size-attribute="'population'" td-xattribute="'HDI'" td-yattribute="controller.selectedIndicator" td-tooltip-message="controller.tooltipMessage" td-min-size="5" td-max-size="20" td-color-attribute="'Region'" td-width="400" td-trendline="false" td-color-legend="controller.legend" td-drawing="controller.drawing" td-exclude-zero-x="true" td-id-attribute="'iso3'" td-selected="controller.selectedCountry" td-log-scale-y="controller.selectedIndicator=='GNI'" td-y-limits="controller.limits[controller.selectedIndicator]" td-x-limits="[0.18,1]" td-data-version="controller.dataVersion" td-highlight-x-band="controller.bands['HDI']" td-highlight-x-alt-band="controller.bands['IHDI']" td-highlight-y-band="controller.bands[controller.selectedIndicator]" td-on-selected="controller.kk" td-activate-alt-x-band="controller.showInequalityBand" td-x-label="'Human Development Index (HDI)'" td-y-label="controller.indicatorAxisLabel[controller.selectedIndicator]" td-year-label="controller.selectedYear">    
+  <div ng-show="controller.loading" class="label label-danger text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading data...</div>
+
+  <div td-xy-chart ng-hide="controller.loading" class="col-md-12" ng-model="controller.data" td-data="controller.data" td-size-attribute="'population'" td-xattribute="'HDI'" td-yattribute="controller.selectedIndicator" td-tooltip-message="controller.tooltipMessage" td-min-size="5" td-max-size="20" td-color-attribute="'Region'" td-width="400" td-trendline="false" td-color-legend="controller.legend" td-drawing="controller.drawing" td-exclude-zero-x="true" td-id-attribute="'iso3'" td-selected="controller.selectedCountry" td-log-scale-y="controller.selectedIndicator=='GNI'" td-y-limits="controller.limits[controller.selectedIndicator]" td-x-limits="[0.18,1]" td-data-version="controller.dataVersion" td-highlight-x-band="controller.bands['HDI']" td-highlight-x-alt-band="controller.bands['IHDI']" td-highlight-y-band="controller.bands[controller.selectedIndicator]" td-on-selected="controller.clickedCountry" td-activate-alt-x-band="controller.showInequalityBand" td-x-label="'Human Development Index (HDI)'" td-y-label="controller.indicatorAxisLabel[controller.selectedIndicator]" td-year-label="controller.selectedYear">    
   </div>
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-hide="controller.loading">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="row cols-middle">
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
         <label class="btn btn-default btn-xs" ng-click="controller.toggleTimePlay()"><span ng-hide="controller.isTimePlaying" class="glyphicon glyphicon-play" aria-hidden="true">Play</span><span ng-show="controller.isTimePlaying" class="glyphicon glyphicon-pause" aria-hidden="true">Pause</span></label>
@@ -158,7 +162,7 @@
       </tr>              
       <tr>
         <td><abbr title="The IHDI takes into account not only the average achievements of a country on health, education and income, but also how those achievements are distributed among its citizens by “discounting” each dimension’s average value according to its level of inequality.">IHDI</abbr> (Inequality adjusted)
-                  <label type="button" class="btn btn-primary btn-xs"  ng-click="controller.showInequalityBand=!controller.showInequalityBand&&(controller.selectedCountry.IHDI>0)" ng-show="controller.selectedCountry.IHDI>0" style="margin-bottom:4px;white-space: normal;"><span ng-hide="controller.showInequalityBand">Show band</span><span ng-show="controller.showInequalityBand">Hide band</span></label></td>
+                  <label type="button" class="btn btn-primary btn-xs"  ng-click="controller.showInequalityBand=!controller.showInequalityBand&&(controller.selectedCountry.IHDI>0)" ng-show="controller.selectedCountry.IHDI>0" style="margin-bottom:4px;white-space: normal;" analytics-on="click" analytics-event="select" analytics-category="ihdi-band" analytics-label="toggle-ihdi"><span ng-hide="controller.showInequalityBand">Show band</span><span ng-show="controller.showInequalityBand">Hide band</span></label></td>
         <td>{{controller.selectedCountry.IHDI}}
         </td>
       </tr>
@@ -388,8 +392,7 @@
    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
  })(window,document,'script',protocol+'//www.google-analytics.com/analytics.js','ga');
 
- ga('create', 'UA-57309660-1');
- ga('send', 'pageview');
+ ga('create', 'UA-60690293-1');
 </script>
 
     <!--[if lt IE 9]>
@@ -399,9 +402,7 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="./bower_components/jquery/dist/jquery.js"></script>
-    <script src="./bower_components/angular/angular.js"></script>
-    <script src="./bower_components/angular-touch/angular-touch.min.js"></script>
+     <script src="./bower_components/angular-touch/angular-touch.min.js"></script>
     <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="./bower_components/d3/d3.js"></script>
@@ -410,6 +411,8 @@
     <script src="./bower_components/venturocket-angular-slider/build/angular-slider.min.js"></script>     
 
     <script src="./bower_components/d3-tip/index.js"></script>     
+   <script src="./bower_components/angularitics/dist/angulartics.min.js"></script>     
+   <script src="./bower_components/angularitics/dist/angulartics-ga.min.js"></script>     
 
 
     <!-- endbower -->
